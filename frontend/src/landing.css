@@ -1,0 +1,307 @@
+/* ==========================================================
+   GVMC SMART WATER MANAGEMENT PLATFORM
+   Official Government Landing Portal — Apple Liquid Glass UI
+   ========================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --gvmc-primary: #005BAC;
+  --gvmc-secondary: #0077CC;
+  --gvmc-accent: #00B8D9;
+  --gvmc-bg: #F6F8FB;
+  --gvmc-bg-gradient: linear-gradient(180deg, #F6F8FB 0%, #EDF3FA 100%);
+  --gvmc-glass-bg: rgba(255, 255, 255, 0.65);
+  --gvmc-glass-border: rgba(255, 255, 255, 0.6);
+  --gvmc-glass-shadow: 0 12px 36px rgba(0, 91, 172, 0.08);
+  --gvmc-glass-hover-shadow: 0 20px 48px rgba(0, 91, 172, 0.15);
+  --gvmc-success: #00C853;
+  --gvmc-warning: #FFC107;
+  --gvmc-danger: #E53935;
+  --gvmc-text: #243447;
+  --gvmc-text-muted: #5A6E85;
+}
+
+/* Landing Portal Container Scope */
+.landing-portal {
+  background-color: var(--gvmc-bg);
+  background-image: 
+    radial-gradient(at 0% 0%, rgba(0, 184, 217, 0.08) 0px, transparent 50%),
+    radial-gradient(at 100% 0%, rgba(0, 91, 172, 0.1) 0px, transparent 50%),
+    radial-gradient(at 50% 100%, rgba(0, 119, 204, 0.06) 0px, transparent 50%);
+  color: var(--gvmc-text);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, "SF Pro Display", sans-serif;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* Apple Liquid Glass Card */
+.glass-card {
+  background: var(--gvmc-glass-bg);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--gvmc-glass-border);
+  border-radius: 24px;
+  box-shadow: var(--gvmc-glass-shadow);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.glass-card-hover:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--gvmc-glass-hover-shadow);
+  border-color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.78);
+}
+
+/* Glass Buttons */
+.glass-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: 14px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  border: none;
+  outline: none;
+  text-decoration: none;
+}
+
+.glass-btn-primary {
+  background: linear-gradient(135deg, var(--gvmc-primary) 0%, var(--gvmc-secondary) 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 91, 172, 0.25);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.glass-btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 91, 172, 0.35);
+  background: linear-gradient(135deg, #0068c2 0%, #0084e0 100%);
+}
+
+.glass-btn-secondary {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  color: var(--gvmc-primary);
+  border: 1px solid rgba(0, 91, 172, 0.25);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.glass-btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.95);
+  transform: translateY(-2px);
+  border-color: var(--gvmc-primary);
+  box-shadow: 0 8px 20px rgba(0, 91, 172, 0.12);
+}
+
+.glass-btn-accent {
+  background: linear-gradient(135deg, var(--gvmc-accent) 0%, #0096b3 100%);
+  color: #ffffff;
+  box-shadow: 0 8px 20px rgba(0, 184, 217, 0.25);
+}
+
+.glass-btn-accent:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(0, 184, 217, 0.35);
+}
+
+/* Sticky Navigation Bar */
+.landing-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: rgba(246, 248, 251, 0.75);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border-bottom: 1px solid rgba(0, 91, 172, 0.1);
+  padding: 12px 32px;
+  transition: all 0.3s ease;
+}
+
+/* Fine, Small & Elegant Nav Link Tabs */
+.landing-nav-link {
+  color: var(--gvmc-text);
+  font-weight: 500;
+  font-size: 0.82rem;
+  letter-spacing: 0.2px;
+  padding: 5px 12px;
+  border-radius: 100px;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.landing-nav-link:hover, .landing-nav-link.active {
+  color: var(--gvmc-primary);
+  background: rgba(0, 91, 172, 0.08);
+  font-weight: 600;
+}
+
+/* Center Search Bar Pill */
+.search-pill {
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1.5px solid rgba(0, 91, 172, 0.18);
+  border-radius: 100px;
+  padding: 6px 18px;
+  box-shadow: 0 4px 14px rgba(0, 91, 172, 0.06);
+  transition: all 0.3s ease;
+  width: 380px;
+  max-width: 100%;
+}
+
+.search-pill:focus-within {
+  border-color: var(--gvmc-primary);
+  box-shadow: 0 6px 20px rgba(0, 91, 172, 0.15);
+  width: 420px;
+  background: #ffffff;
+}
+
+.search-pill input {
+  border: none;
+  background: transparent;
+  outline: none;
+  font-size: 0.85rem;
+  color: var(--gvmc-text);
+  width: 100%;
+  margin-left: 8px;
+}
+
+.search-pill input::placeholder {
+  color: var(--gvmc-text-muted);
+}
+
+/* Section Containers */
+.landing-section {
+  max-width: 1360px;
+  margin: 0 auto;
+  padding: 64px 32px;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 48px;
+}
+
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 91, 172, 0.08);
+  color: var(--gvmc-primary);
+  padding: 6px 14px;
+  border-radius: 100px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.8px;
+  margin-bottom: 16px;
+}
+
+.section-title {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: var(--gvmc-text);
+  letter-spacing: -0.5px;
+  margin-bottom: 12px;
+}
+
+.section-subtitle {
+  font-size: 1.05rem;
+  color: var(--gvmc-text-muted);
+  max-width: 640px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+/* Modal Overlay */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(15, 23, 42, 0.45);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 20px;
+  animation: fadeIn 0.25s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-content {
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Input Fields in Landing */
+.landing-form-input {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.8);
+  border: 1px solid rgba(0, 91, 172, 0.2);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  color: var(--gvmc-text);
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.landing-form-input:focus {
+  border-color: var(--gvmc-primary);
+  background: #ffffff;
+  box-shadow: 0 0 0 3px rgba(0, 91, 172, 0.15);
+}
+
+/* Custom Scrollbar for Landing Portal */
+.landing-portal ::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.landing-portal ::-webkit-scrollbar-track {
+  background: #EDF3FA;
+}
+.landing-portal ::-webkit-scrollbar-thumb {
+  background: rgba(0, 91, 172, 0.25);
+  border-radius: 4px;
+}
+.landing-portal ::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 91, 172, 0.45);
+}
+
+/* Leaflet Map Styling */
+.leaflet-container {
+  background-color: #1a2332 !important;
+  font-family: inherit !important;
+}
+
+/* CSS Dark Filter for map tiles - makes OpenStreetMap dark navy with bright labels */
+.dark-mode-tiles .leaflet-tile {
+  filter: brightness(0.6) invert(100%) hue-rotate(180deg) saturate(200%) contrast(120%);
+}
+
+
