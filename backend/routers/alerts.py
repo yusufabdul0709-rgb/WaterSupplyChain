@@ -15,7 +15,7 @@ router = APIRouter(prefix="/api/v1/alerts", tags=["alerts"])
 
 @router.get("")
 async def list_alerts(
-    status: str = Query(default="all", regex="^(all|active)$"),
+    status: str = Query(default="all", pattern="^(all|active)$"),
     limit: int = Query(default=50, ge=1, le=500),
 ) -> list[dict]:
     """Return alerts ordered by timestamp DESC."""

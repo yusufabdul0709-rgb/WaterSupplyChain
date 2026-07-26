@@ -1,24 +1,69 @@
 {
   "expo": {
-    "name": "gvmc-mobile-app",
-    "slug": "gvmc-mobile-app",
+    "name": "GVMC Water",
+    "slug": "gvmc-citizen-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
-    "ios": {
-      "supportsTablet": true
+    "scheme": "gvmc-water",
+    "newArchEnabled": false,
+    "splash": {
+      "image": "./assets/splash-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#005BAC"
     },
-    "android": {
-      "adaptiveIcon": {
-        "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "in.gov.gvmc.water",
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "GVMC needs your location to show water supply information for your area.",
+        "NSLocationAlwaysUsageDescription": "GVMC needs your location to provide area-specific water updates.",
+        "NSCameraUsageDescription": "GVMC needs camera access to capture photos for issue reports.",
+        "NSMicrophoneUsageDescription": "GVMC needs microphone access for voice notes in issue reports.",
+        "NSFaceIDUsageDescription": "Use Face ID for quick and secure login.",
+        "NSPhotoLibraryUsageDescription": "GVMC needs photo library access to attach images to issue reports."
       }
     },
+    "android": {
+      "package": "in.gov.gvmc.water",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/android-icon-foreground.png",
+        "backgroundImage": "./assets/android-icon-background.png",
+        "monochromeImage": "./assets/android-icon-monochrome.png",
+        "backgroundColor": "#005BAC"
+      },
+      "permissions": [
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_FINE_LOCATION",
+        "CAMERA",
+        "RECORD_AUDIO",
+        "USE_BIOMETRIC",
+        "USE_FINGERPRINT",
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE",
+        "RECEIVE_BOOT_COMPLETED",
+        "VIBRATE"
+      ]
+    },
     "web": {
-      "favicon": "./assets/favicon.png"
-    }
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "plugins": [
+      "expo-router",
+      "expo-font",
+      "expo-location",
+      "expo-image-picker",
+      "expo-camera",
+      [
+        "expo-av",
+        {
+          "microphonePermission": "GVMC needs microphone access for voice recording."
+        }
+      ],
+      "expo-local-authentication",
+      "expo-splash-screen"
+    ]
   }
 }
