@@ -50,16 +50,21 @@ export default function DigitalTwinMapScreen() {
 
   const complaints = complaintsData?.data || [];
 
-  const tileUrl = MAPBOX_ACCESS_TOKEN
-    ? `https://api.mapbox.com/styles/v1/mapbox/dark-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_ACCESS_TOKEN}`
-    : 'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png';
+  // Use CartoDB Dark Matter tiles (identical aesthetic to Mapbox Dark, 100% reliable on Android without Referer header restrictions)
+  const tileUrl = 'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png';
 
   return (
     <View style={styles.container}>
       <MapView
         provider={PROVIDER_DEFAULT}
-        customMapStyle={DARK_MAP_STYLE}
-        style={StyleSheet.absoluteFill}
+        mapType="none"
+        style={[StyleSheet.absoluteFill, { backgroundColor: '#070d19' }]}
+        minZoomLevel={11}
+        maxZoomLevel={18}
+        mapBoundaries={{
+          northEast: { latitude: 17.95, longitude: 83.50 },
+          southWest: { latitude: 17.55, longitude: 83.05 },
+        }}
         initialRegion={{
           latitude: sectorView.center[0],
           longitude: sectorView.center[1],
@@ -67,11 +72,12 @@ export default function DigitalTwinMapScreen() {
           longitudeDelta: 0.04,
         }}
       >
-        {/* Mapbox / CartoDB Digital Twin Dark Base Tiles */}
+        {/* Digital Twin Dark Base Tiles */}
         <UrlTile
           urlTemplate={tileUrl}
           maximumZ={19}
           flipY={false}
+          zIndex={-1}
         />
         {/* Animated Dashed Water Flow Pipes */}
         {MAP_PIPES.map((pipe, index) => (
@@ -84,6 +90,7 @@ export default function DigitalTwinMapScreen() {
             strokeColor="#00e5ff"
             strokeWidth={3}
             lineDashPattern={[6, 4]}
+            zIndex={10}
           />
         ))}
 
@@ -98,6 +105,7 @@ export default function DigitalTwinMapScreen() {
               coordinate={{ latitude: node.lat, longitude: node.lon }}
               title={node.name}
               description={`Flow: ${node.flow} · SLA: ${node.eff}`}
+              zIndex={20}
             >
               <MapMarker name={node.name} type={node.type as any} />
             </Marker>
