@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
-import MapView, { Marker, Polyline, PROVIDER_DEFAULT } from 'react-native-maps';
+import MapView, { Marker, Polyline, PROVIDER_DEFAULT, UrlTile } from 'react-native-maps';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Layers, RefreshCw, AlertTriangle, ShieldCheck } from 'lucide-react-native';
 import { Colors, Typography } from '../../constants/theme';
 import { MAP_NODES, MAP_PIPES, SECTOR_MAP_VIEWS } from '../../constants/sectors';
+import { MAPBOX_ACCESS_TOKEN } from '../../constants/api';
 import { useAuthStore } from '../../store/authStore';
 import { MapMarker } from '../../components/map/MapMarker';
 import { SectorSheet } from '../../components/map/SectorSheet';
@@ -49,6 +50,10 @@ export default function DigitalTwinMapScreen() {
 
   const complaints = complaintsData?.data || [];
 
+  const tileUrl = MAPBOX_ACCESS_TOKEN
+    ? `https://api.mapbox.com/styles/v1/mapbox/dark-v11/tiles/256/{z}/{x}/{y}@2x?access_token=${MAPBOX_ACCESS_TOKEN}`
+    : 'https://a.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}@2x.png';
+
   return (
     <View style={styles.container}>
       <MapView
@@ -62,6 +67,12 @@ export default function DigitalTwinMapScreen() {
           longitudeDelta: 0.04,
         }}
       >
+        {/* Mapbox / CartoDB Digital Twin Dark Base Tiles */}
+        <UrlTile
+          urlTemplate={tileUrl}
+          maximumZ={19}
+          flipY={false}
+        />
         {/* Animated Dashed Water Flow Pipes */}
         {MAP_PIPES.map((pipe, index) => (
           <Polyline
