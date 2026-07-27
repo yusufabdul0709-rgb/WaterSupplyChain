@@ -6,9 +6,10 @@ import { Colors, Typography, BorderRadius } from '../../constants/theme';
 interface OTPInputProps {
   length?: number;
   onCodeFilled: (code: string) => void;
+  onCodeChanged?: (code: string) => void;
 }
 
-export function OTPInput({ length = 6, onCodeFilled }: OTPInputProps) {
+export function OTPInput({ length = 6, onCodeFilled, onCodeChanged }: OTPInputProps) {
   const [code, setCode] = useState<string[]>(Array(length).fill(''));
   const inputRefs = useRef<Array<TextInput | null>>([]);
 
@@ -24,6 +25,9 @@ export function OTPInput({ length = 6, onCodeFilled }: OTPInputProps) {
     }
 
     const fullCode = newCode.join('');
+    if (onCodeChanged) {
+      onCodeChanged(fullCode);
+    }
     if (fullCode.length === length && !fullCode.includes('')) {
       onCodeFilled(fullCode);
     }
