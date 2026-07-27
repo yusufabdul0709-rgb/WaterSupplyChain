@@ -26,7 +26,7 @@ export function AnimatedHeader({
 
   return (
     <View style={[styles.wrapper, { paddingTop: insets.top + 8 }]}>
-      <BlurView intensity={BlurIntensity.light} tint="light" style={StyleSheet.absoluteFillObject} />
+      <BlurView intensity={BlurIntensity.light} tint="light" style={StyleSheet.absoluteFill} />
       <View style={styles.container}>
         <View style={styles.left}>
           <View style={styles.avatarContainer}>

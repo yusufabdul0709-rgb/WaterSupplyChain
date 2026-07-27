@@ -54,7 +54,7 @@ export default function DigitalTwinMapScreen() {
       <MapView
         provider={PROVIDER_DEFAULT}
         customMapStyle={DARK_MAP_STYLE}
-        style={StyleSheet.absoluteFillObject}
+        style={StyleSheet.absoluteFill}
         initialRegion={{
           latitude: sectorView.center[0],
           longitude: sectorView.center[1],

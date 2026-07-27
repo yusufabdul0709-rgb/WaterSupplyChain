@@ -4,7 +4,7 @@
 
 // For Android Emulator use 10.0.2.2, for iOS Simulator use localhost
 // For physical device, use your machine's LAN IP
-export const API_BASE_URL = 'http://10.0.2.2:8000';
+export const API_BASE_URL = 'http://172.27.85.183:8000';
 
 export const MAPBOX_ACCESS_TOKEN = process.env.EXPO_PUBLIC_MAPBOX_TOKEN || '';
 

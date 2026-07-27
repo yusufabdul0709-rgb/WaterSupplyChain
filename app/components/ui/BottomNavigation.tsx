@@ -37,7 +37,7 @@ export function BottomNavigation() {
   return (
     <View style={[styles.wrapper, { paddingBottom: Math.max(insets.bottom, 12) }]}>
       <View style={styles.floatingContainer}>
-        <BlurView intensity={BlurIntensity.heavy} tint="light" style={StyleSheet.absoluteFillObject} />
+        <BlurView intensity={BlurIntensity.heavy} tint="light" style={StyleSheet.absoluteFill} />
         <View style={styles.tabBar}>
           {TABS.map((tab) => {
             const Icon = tab.icon;

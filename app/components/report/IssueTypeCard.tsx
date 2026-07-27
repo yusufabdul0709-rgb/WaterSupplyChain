@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import {
-  DropletOff,
+  Droplet,
   Gauge,
   Droplets,
   Beaker,
@@ -23,7 +23,7 @@ interface IssueTypeCardProps {
 }
 
 const ICON_MAP: Record<string, any> = {
-  'droplet-off': DropletOff,
+  'droplet-off': Droplet,
   gauge: Gauge,
   droplets: Droplets,
   beaker: Beaker,

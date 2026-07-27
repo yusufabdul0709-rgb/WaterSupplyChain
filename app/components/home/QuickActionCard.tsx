@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, ViewStyle, StyleProp } from 'react-native';
 import * as Haptics from 'expo-haptics';
 import {
-  DropletOff,
+  Droplet,
   Gauge,
   Droplets,
   Beaker,
@@ -23,7 +23,7 @@ interface QuickActionCardProps {
 }
 
 const ICON_MAP: Record<string, any> = {
-  'droplet-off': DropletOff,
+  'droplet-off': Droplet,
   gauge: Gauge,
   droplets: Droplets,
   beaker: Beaker,

@@ -33,7 +33,7 @@ export function GlassCard({
 
   return (
     <View style={[getVariantStyle(), style]}>
-      <BlurView intensity={intensity} tint="light" style={StyleSheet.absoluteFillObject} />
+      <BlurView intensity={intensity} tint="light" style={StyleSheet.absoluteFill} />
       <View style={styles.content}>{children}</View>
     </View>
   );

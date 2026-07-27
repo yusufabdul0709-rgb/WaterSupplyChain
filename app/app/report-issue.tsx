@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, ScrollView, TextInput, TouchableOpacity, Alert 
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter, useLocalSearchParams } from 'expo-router';
 import { ArrowLeft, MapPin, CheckCircle, Send } from 'lucide-react-native';
-import { Colors, Typography, Spacing } from '../../constants/theme';
+import { Colors, Typography, Spacing } from '../constants/theme';
 import { GlassCard } from '../components/ui/GlassCard';
 import { GlassButton } from '../components/ui/GlassButton';
 import { StepIndicator } from '../components/report/StepIndicator';

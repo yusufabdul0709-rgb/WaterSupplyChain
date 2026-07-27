@@ -22,7 +22,7 @@ export default function SplashScreen() {
     <View style={styles.container}>
       <LinearGradient
         colors={['#003875', '#005BAC', '#00A6D6']}
-        style={StyleSheet.absoluteFillObject}
+        style={StyleSheet.absoluteFill}
       />
 
       <View style={styles.content}>
