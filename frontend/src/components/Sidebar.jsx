@@ -1,14 +1,15 @@
 import React from 'react';
-import { LayoutDashboard, Map, Activity, Zap, Database, Droplets, AlertTriangle, Cpu, MessageSquare, Settings } from 'lucide-react';
+import { LayoutDashboard, Map, Activity, Zap, Database, Droplets, AlertTriangle, Cpu, MessageSquare, Settings, Globe } from 'lucide-react';
 
 const Sidebar = ({ activeTab, setActiveTab }) => {
   const menuItems = [
     { id: 'command', label: 'Dashboard', icon: LayoutDashboard },
-    { id: 'command', label: 'Water Network Map', icon: Map },
-    { id: 'command', label: 'Pumping Stations', icon: Zap, badge: '14' },
-    { id: 'command', label: 'Reservoirs', icon: Database, badge: '8' },
-    { id: 'command', label: 'Water Quality PH', icon: Droplets, badge: 'PH' },
-    { id: 'command', label: 'Leak Intelligence', icon: AlertTriangle, badge: 'AI' },
+    { id: 'digital_twin', label: 'Digital Twin 3D', icon: Globe, badge: 'LIVE' },
+    { id: 'network_map', label: 'Water Network Map', icon: Map },
+    { id: 'pumping_stations', label: 'Pumping Stations', icon: Zap, badge: '14' },
+    { id: 'reservoirs', label: 'Reservoirs', icon: Database, badge: '8' },
+    { id: 'water_quality', label: 'Water Quality PH', icon: Droplets, badge: 'PH' },
+    { id: 'leak_intelligence', label: 'Leak Intelligence', icon: AlertTriangle, badge: 'AI' },
     { id: 'complaints', label: 'Citizen Complaints', icon: MessageSquare },
     { id: 'sector_admins', label: 'Sector Heads', icon: Cpu },
   ];

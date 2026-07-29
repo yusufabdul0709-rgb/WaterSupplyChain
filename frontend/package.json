@@ -10,6 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@deck.gl/aggregation-layers": "^9.3.7",
+    "@deck.gl/core": "^9.3.7",
+    "@deck.gl/layers": "^9.3.7",
+    "@deck.gl/mapbox": "^9.3.7",
+    "@turf/turf": "^7.3.5",
+    "framer-motion": "^12.43.0",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.344.0",
     "mapbox-gl": "^3.27.0",

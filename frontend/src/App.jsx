@@ -7,6 +7,7 @@ import ComplaintsTab from './components/ComplaintsTab';
 import SectorAdminManager from './components/SectorAdminManager';
 import Login from './components/Login';
 import LandingPage from './pages/LandingPage';
+import DigitalTwinView from './components/DigitalTwin/DigitalTwinView';
 import { Activity, ShieldAlert, Cpu, CheckCircle } from 'lucide-react';
 
 function App() {
@@ -108,13 +109,13 @@ function App() {
 
         {/* Center Main View Area */}
         <main style={{ flex: 1, padding: '16px', display: 'flex', flexDirection: 'column', gap: '16px', overflow: 'hidden' }}>
-          {activeTab === 'command' && (
+          {['command', 'dashboard', 'network_map', 'pumping_stations', 'reservoirs', 'water_quality', 'leak_intelligence'].includes(activeTab) && (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 340px', gap: '16px', height: '100%' }}>
               {/* Map & Telemetry Dashboard Left */}
               <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', height: '100%' }}>
                 {/* Mapbox Visakhapatnam Map */}
                 <div style={{ flex: 1, position: 'relative' }}>
-                  <MapView selectedSector={selectedSector} complaints={complaints} />
+                  <MapView selectedSector={selectedSector} complaints={complaints} mode={activeTab} />
                 </div>
               </div>
 
@@ -180,6 +181,12 @@ function App() {
 
           {activeTab === 'sector_admins' && (
             <SectorAdminManager sectors={sectors} onRefresh={fetchSectors} />
+          )}
+
+          {activeTab === 'digital_twin' && (
+            <div style={{ flex: 1, overflow: 'hidden' }}>
+              <DigitalTwinView selectedSector={selectedSector} />
+            </div>
           )}
         </main>
       </div>

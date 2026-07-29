@@ -170,5 +170,26 @@ body {
   filter: brightness(0.6) invert(100%) hue-rotate(180deg) saturate(200%) contrast(120%);
 }
 
+/* Map Mode Keyframe Animations */
+@keyframes map-rotate-pump {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+@keyframes map-water-shimmer {
+  0%   { left: -100%; }
+  100% { left: 100%; }
+}
+
+@keyframes map-pulse-leak {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7);
+  }
+  50% {
+    box-shadow: 0 0 0 14px rgba(239, 68, 68, 0);
+  }
+}
+
+
 
 
