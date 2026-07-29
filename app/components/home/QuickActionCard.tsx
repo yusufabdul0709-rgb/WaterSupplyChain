@@ -12,6 +12,7 @@ import {
   PlusCircle,
   Receipt,
   PhoneCall,
+  AlertTriangle,
 } from 'lucide-react-native';
 import { Colors, Typography, BorderRadius, Shadows } from '../../constants/theme';
 import { IssueType } from '../../data/issueTypes';
@@ -43,11 +44,11 @@ export function QuickActionCard({ item, onPress, style }: QuickActionCardProps) 
     onPress(item);
   };
 
-  const isEmergency = item.category === 'emergency';
+  const isEmergency = item.priority === 'CRITICAL';
 
   return (
     <TouchableOpacity
-      activeOpacity={0.75}
+      activeOpacity={0.8}
       onPress={handlePress}
       style={[
         styles.card,
@@ -56,11 +57,16 @@ export function QuickActionCard({ item, onPress, style }: QuickActionCardProps) 
       ]}
     >
       <View style={[styles.iconBox, isEmergency && styles.emergencyIconBox]}>
-        <IconComponent size={24} color={isEmergency ? Colors.danger : Colors.primary} />
+        <IconComponent size={22} color={isEmergency ? Colors.error : Colors.primary} />
       </View>
-      <Text style={[styles.title, isEmergency && styles.emergencyText]} numberOfLines={2}>
-        {item.title}
-      </Text>
+      <View style={styles.textGroup}>
+        <Text style={[styles.title, isEmergency && styles.emergencyText]} numberOfLines={1}>
+          {item.title}
+        </Text>
+        <Text style={styles.subtitle} numberOfLines={1}>
+          Report issue
+        </Text>
+      </View>
     </TouchableOpacity>
   );
 }
@@ -68,40 +74,49 @@ export function QuickActionCard({ item, onPress, style }: QuickActionCardProps) 
 const styles = StyleSheet.create({
   card: {
     width: '48%',
-    backgroundColor: 'rgba(255, 255, 255, 0.65)',
-    borderRadius: BorderRadius.lg,
+    backgroundColor: '#FFFFFF',
+    borderRadius: BorderRadius.card, // 24px
     padding: 14,
     marginBottom: 12,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.8)',
+    borderColor: Colors.border,
     flexDirection: 'row',
     alignItems: 'center',
-    ...Shadows.sm,
+    ...Shadows.card,
   },
   emergencyCard: {
     backgroundColor: Colors.dangerLight,
-    borderColor: 'rgba(229, 57, 53, 0.3)',
+    borderColor: 'rgba(239, 68, 68, 0.25)',
   },
   iconBox: {
-    width: 42,
-    height: 42,
-    borderRadius: 12,
-    backgroundColor: 'rgba(0, 91, 172, 0.1)',
+    width: 44,
+    height: 44,
+    borderRadius: 14,
+    backgroundColor: 'rgba(0, 91, 172, 0.08)',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 10,
   },
   emergencyIconBox: {
-    backgroundColor: 'rgba(229, 57, 53, 0.15)',
+    backgroundColor: 'rgba(239, 68, 68, 0.15)',
+  },
+  textGroup: {
+    flex: 1,
   },
   title: {
-    ...Typography.subheadMedium,
+    ...Typography.bodyMedium,
     color: Colors.text,
-    flex: 1,
-    fontWeight: '600',
+    fontSize: 14,
+    fontWeight: '700',
+  },
+  subtitle: {
+    ...Typography.caption2,
+    color: Colors.textSecondary,
+    fontSize: 11,
+    marginTop: 1,
   },
   emergencyText: {
-    color: Colors.danger,
+    color: Colors.error,
     fontWeight: '700',
   },
 });

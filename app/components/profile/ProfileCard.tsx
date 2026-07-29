@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
-import { CheckCircle2, ShieldCheck } from 'lucide-react-native';
-import { Colors, Typography } from '../../constants/theme';
+import { ShieldCheck, Phone, Mail } from 'lucide-react-native';
+import { Colors, Typography, BorderRadius } from '../../constants/theme';
 import { GlassCard } from '../ui/GlassCard';
 import { CitizenUser } from '../../store/authStore';
 
@@ -11,23 +11,36 @@ interface ProfileCardProps {
 
 export function ProfileCard({ user }: ProfileCardProps) {
   return (
-    <GlassCard style={styles.card} intensity={50} variant="elevated">
+    <GlassCard style={styles.card} intensity={40} variant="elevated">
       <View style={styles.header}>
+        {/* Avatar with exact 26px radius (52x52 container) */}
         <View style={styles.avatar}>
           <Text style={styles.avatarText}>{user.name.charAt(0)}</Text>
+          <View style={styles.verifiedDot}>
+            <ShieldCheck size={10} color="#FFF" />
+          </View>
         </View>
 
         <View style={styles.headerInfo}>
           <View style={styles.nameRow}>
             <Text style={styles.name}>{user.name}</Text>
             <View style={styles.verifiedBadge}>
-              <ShieldCheck size={14} color={Colors.success} />
-              <Text style={styles.verifiedText}>VERIFIED CITIZEN</Text>
+              <ShieldCheck size={12} color={Colors.success} />
+              <Text style={styles.verifiedText}>Government Verified</Text>
             </View>
           </View>
 
-          <Text style={styles.phone}>{user.phone}</Text>
-          <Text style={styles.email}>{user.email}</Text>
+          <View style={styles.contactRow}>
+            <Phone size={12} color={Colors.textSecondary} />
+            <Text style={styles.phone}>{user.phone}</Text>
+          </View>
+
+          {user.email && (
+            <View style={styles.contactRow}>
+              <Mail size={12} color={Colors.textTertiary} />
+              <Text style={styles.email}>{user.email}</Text>
+            </View>
+          )}
         </View>
       </View>
 
@@ -54,26 +67,45 @@ const styles = StyleSheet.create({
   card: {
     padding: 20,
     marginBottom: 20,
+    borderRadius: BorderRadius.card, // 24px
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   avatar: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
+    width: 52,
+    height: 52,
+    borderRadius: BorderRadius.avatar, // Exact 26px
     backgroundColor: Colors.primary,
     justifyContent: 'center',
     alignItems: 'center',
-    marginRight: 16,
+    marginRight: 14,
     borderWidth: 2,
-    borderColor: 'rgba(255, 255, 255, 0.8)',
+    borderColor: '#FFFFFF',
+    shadowColor: Colors.primary,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.12,
+    shadowRadius: 6,
+    elevation: 3,
   },
   avatarText: {
-    ...Typography.title1,
-    color: Colors.textInverse,
-    fontWeight: '700',
+    ...Typography.sectionTitle,
+    color: '#FFF',
+    fontWeight: '800',
+  },
+  verifiedDot: {
+    position: 'absolute',
+    bottom: -2,
+    right: -2,
+    backgroundColor: Colors.success,
+    borderRadius: 8,
+    width: 16,
+    height: 16,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderWidth: 1.5,
+    borderColor: '#FFFFFF',
   },
   headerInfo: {
     flex: 1,
@@ -84,37 +116,45 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
   },
   name: {
-    ...Typography.title3,
+    ...Typography.cardTitle,
     color: Colors.text,
+    fontSize: 18,
     marginRight: 8,
   },
   verifiedBadge: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: Colors.successLight,
-    paddingHorizontal: 6,
+    paddingHorizontal: 8,
     paddingVertical: 2,
-    borderRadius: 6,
+    borderRadius: BorderRadius.pill,
   },
   verifiedText: {
-    ...Typography.caption2,
+    ...Typography.label,
     color: Colors.success,
     fontWeight: '700',
-    marginLeft: 2,
+    fontSize: 10,
+    marginLeft: 3,
+  },
+  contactRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 3,
   },
   phone: {
-    ...Typography.subhead,
+    ...Typography.caption2,
     color: Colors.textSecondary,
-    marginTop: 2,
+    marginLeft: 4,
+    fontWeight: '600',
   },
   email: {
-    ...Typography.footnote,
+    ...Typography.caption2,
     color: Colors.textTertiary,
-    marginTop: 1,
+    marginLeft: 4,
   },
   divider: {
     height: 1,
-    backgroundColor: Colors.divider,
+    backgroundColor: Colors.border,
     marginVertical: 16,
   },
   idsRow: {
@@ -127,19 +167,21 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   idLabel: {
-    ...Typography.caption2,
+    ...Typography.label,
     color: Colors.textTertiary,
+    fontSize: 10,
     letterSpacing: 1,
   },
   idValue: {
-    ...Typography.subheadMedium,
+    ...Typography.bodyMedium,
     color: Colors.primary,
-    fontWeight: '700',
+    fontWeight: '800',
+    fontSize: 13,
     marginTop: 2,
   },
   verticalDivider: {
     width: 1,
-    height: 30,
-    backgroundColor: Colors.divider,
+    height: 28,
+    backgroundColor: Colors.border,
   },
 });

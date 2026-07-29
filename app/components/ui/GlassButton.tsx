@@ -34,13 +34,13 @@ export function GlassButton({
   if (variant === 'primary') {
     return (
       <TouchableOpacity
-        activeOpacity={0.85}
+        activeOpacity={0.88}
         onPress={handlePress}
         disabled={disabled || loading}
         style={[styles.container, disabled && styles.disabled, style]}
       >
         <LinearGradient
-          colors={[Colors.primary, Colors.secondary]}
+          colors={[Colors.primary, Colors.primaryLight]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 0 }}
           style={styles.gradient}
@@ -76,7 +76,7 @@ export function GlassButton({
 
   return (
     <TouchableOpacity
-      activeOpacity={0.75}
+      activeOpacity={0.78}
       onPress={handlePress}
       disabled={disabled || loading}
       style={[styles.container, vStyles.container, disabled && styles.disabled, style]}
@@ -95,7 +95,7 @@ export function GlassButton({
 
 const styles = StyleSheet.create({
   container: {
-    borderRadius: BorderRadius.button,
+    borderRadius: BorderRadius.button, // 18px
     overflow: 'hidden',
     height: 52,
     justifyContent: 'center',
@@ -108,48 +108,48 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     paddingHorizontal: 20,
-    ...Shadows.md,
+    ...Shadows.sm,
   },
   primaryText: {
     ...Typography.bodyMedium,
     color: Colors.textInverse,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   secondaryContainer: {
-    backgroundColor: 'rgba(0, 166, 214, 0.12)',
+    backgroundColor: 'rgba(14, 165, 233, 0.12)',
     borderWidth: 1,
-    borderColor: 'rgba(0, 166, 214, 0.25)',
+    borderColor: 'rgba(14, 165, 233, 0.25)',
     flexDirection: 'row',
     paddingHorizontal: 20,
   },
   secondaryText: {
     ...Typography.bodyMedium,
     color: Colors.secondary,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   outlineContainer: {
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
-    borderWidth: 1.5,
-    borderColor: Colors.primary,
+    backgroundColor: 'rgba(255, 255, 255, 0.75)',
+    borderWidth: 1,
+    borderColor: Colors.border,
     flexDirection: 'row',
     paddingHorizontal: 20,
   },
   outlineText: {
     ...Typography.bodyMedium,
     color: Colors.primary,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   dangerContainer: {
     backgroundColor: Colors.dangerLight,
     borderWidth: 1,
-    borderColor: 'rgba(229, 57, 53, 0.3)',
+    borderColor: 'rgba(239, 68, 68, 0.25)',
     flexDirection: 'row',
     paddingHorizontal: 20,
   },
   dangerText: {
     ...Typography.bodyMedium,
     color: Colors.danger,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   ghostContainer: {
     backgroundColor: 'transparent',
@@ -159,7 +159,7 @@ const styles = StyleSheet.create({
   ghostText: {
     ...Typography.bodyMedium,
     color: Colors.primary,
-    fontWeight: '600',
+    fontWeight: '700',
   },
   disabled: {
     opacity: 0.5,

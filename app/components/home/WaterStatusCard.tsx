@@ -2,8 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import Svg, { Circle } from 'react-native-svg';
 import { useRouter } from 'expo-router';
-import { Clock, Gauge, ArrowRight } from 'lucide-react-native';
-import { Colors, Typography, Spacing } from '../../constants/theme';
+import { Clock, Gauge, ArrowRight, Droplets, Activity, Layers } from 'lucide-react-native';
+import { Colors, Typography, Spacing, BorderRadius } from '../../constants/theme';
 import { GlassCard } from '../ui/GlassCard';
 import { StatusBadge } from '../ui/StatusBadge';
 import { WaterSchedule } from '../../data/mockWaterSchedule';
@@ -28,28 +28,31 @@ export function WaterStatusCard({ schedule }: WaterStatusCardProps) {
     return () => clearInterval(timer);
   }, [schedule?.nextSupplyTime]);
 
-  const pressureBar = schedule?.currentPressureBar || 3.4;
+  const pressureBar = schedule?.currentPressureBar ?? 3.4;
   const status = schedule?.status || 'AVAILABLE';
+  const flowRate = '89.5 MLD';
+  const waterAvailable = status === 'AVAILABLE' ? 'YES (High Pressure)' : 'SCHEDULED';
 
-  // SVG Circular progress math
-  const size = 110;
+  // SVG Circular progress gauge math
+  const size = 116;
   const strokeWidth = 10;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
-  // Pressure scale 0 to 5 bar
   const progress = Math.min(pressureBar / 5.0, 1.0);
   const strokeDashoffset = circumference - progress * circumference;
 
   return (
-    <GlassCard style={styles.card} intensity={50} variant="elevated">
+    <GlassCard style={styles.card} intensity={40} variant="elevated">
+      {/* Top Card Header */}
       <View style={styles.header}>
         <View style={styles.headerTitleGroup}>
-          <Text style={styles.sectionHeader}>TODAY'S WATER SUPPLY</Text>
-          <Text style={styles.cardTitle}>Current Water Status</Text>
+          <Text style={styles.sectionHeader}>TODAY'S WATER STATUS</Text>
+          <Text style={styles.cardTitle}>Municipal Supply Live</Text>
         </View>
         <StatusBadge status={status} />
       </View>
 
+      {/* Main Body: Circular Pressure Gauge + Key Telemetry */}
       <View style={styles.body}>
         <View style={styles.gaugeContainer}>
           <Svg width={size} height={size}>
@@ -57,7 +60,7 @@ export function WaterStatusCard({ schedule }: WaterStatusCardProps) {
               cx={size / 2}
               cy={size / 2}
               r={radius}
-              stroke="rgba(0, 91, 172, 0.12)"
+              stroke="#E2E8F0"
               strokeWidth={strokeWidth}
               fill="transparent"
             />
@@ -81,27 +84,43 @@ export function WaterStatusCard({ schedule }: WaterStatusCardProps) {
           </View>
         </View>
 
+        {/* Telemetry Metrics Column */}
         <View style={styles.infoGroup}>
           <View style={styles.infoRow}>
-            <Clock size={18} color={Colors.secondary} />
+            <Clock size={16} color={Colors.secondary} />
             <View style={styles.infoTextGroup}>
               <Text style={styles.infoLabel}>Next Supply Countdown</Text>
               <Text style={styles.countdownText}>{countdown.formatted}</Text>
             </View>
           </View>
 
-          <View style={[styles.infoRow, { marginTop: 12 }]}>
-            <Gauge size={18} color={Colors.primary} />
+          <View style={[styles.infoRow, { marginTop: 10 }]}>
+            <Droplets size={16} color={Colors.primary} />
             <View style={styles.infoTextGroup}>
-              <Text style={styles.infoLabel}>Scheduled Supply Slot</Text>
-              <Text style={styles.slotText}>
-                {schedule?.morningSlot.start} - {schedule?.morningSlot.end}
-              </Text>
+              <Text style={styles.infoLabel}>Water Availability</Text>
+              <Text style={styles.slotText}>{waterAvailable}</Text>
+            </View>
+          </View>
+
+          <View style={[styles.infoRow, { marginTop: 10 }]}>
+            <Activity size={16} color={Colors.success} />
+            <View style={styles.infoTextGroup}>
+              <Text style={styles.infoLabel}>Current Grid Flow</Text>
+              <Text style={styles.slotText}>{flowRate}</Text>
             </View>
           </View>
         </View>
       </View>
 
+      {/* Reservoir Source Detail */}
+      <View style={styles.sourceBox}>
+        <Layers size={14} color={Colors.primary} />
+        <Text style={styles.sourceText} numberOfLines={1}>
+          Source: {schedule?.reservoirSource || 'Simhachalam Reservoir & Yeleru Main Line'}
+        </Text>
+      </View>
+
+      {/* Footer Link to detailed water supply page */}
       <TouchableOpacity
         activeOpacity={0.7}
         onPress={() => router.push('/water-supply')}
@@ -127,20 +146,20 @@ const styles = StyleSheet.create({
   },
   headerTitleGroup: {},
   sectionHeader: {
-    ...Typography.caption1,
-    fontWeight: '700',
+    ...Typography.label,
     color: Colors.primary,
+    fontWeight: '700',
     letterSpacing: 1.2,
   },
   cardTitle: {
-    ...Typography.title2,
+    ...Typography.sectionTitle,
     color: Colors.text,
     marginTop: 2,
   },
   body: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 8,
+    paddingVertical: 4,
   },
   gaugeContainer: {
     position: 'relative',
@@ -153,7 +172,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   gaugeValue: {
-    ...Typography.title1,
+    ...Typography.display,
     color: Colors.primary,
     fontWeight: '800',
   },
@@ -172,34 +191,51 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   infoTextGroup: {
-    marginLeft: 10,
+    marginLeft: 8,
   },
   infoLabel: {
-    ...Typography.caption1,
+    ...Typography.caption2,
     color: Colors.textSecondary,
   },
   countdownText: {
-    ...Typography.title3,
+    ...Typography.cardTitle,
     color: Colors.text,
     fontWeight: '700',
     fontVariant: ['tabular-nums'],
   },
   slotText: {
-    ...Typography.subheadMedium,
+    ...Typography.bodyMedium,
     color: Colors.text,
     fontWeight: '600',
+    fontSize: 14,
+  },
+  sourceBox: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 91, 172, 0.05)',
+    paddingHorizontal: 12,
+    paddingVertical: 8,
+    borderRadius: BorderRadius.md,
+    marginTop: 14,
+  },
+  sourceText: {
+    ...Typography.caption2,
+    color: Colors.textSecondary,
+    fontWeight: '600',
+    marginLeft: 6,
+    flex: 1,
   },
   footerLink: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginTop: 16,
-    paddingTop: 14,
+    marginTop: 14,
+    paddingTop: 12,
     borderTopWidth: 1,
-    borderTopColor: Colors.divider,
+    borderTopColor: Colors.border,
   },
   footerLinkText: {
-    ...Typography.footnoteMedium,
+    ...Typography.captionMedium,
     color: Colors.primary,
     fontWeight: '600',
   },

@@ -1,67 +1,81 @@
 /**
  * GVMC Design System — Theme Constants
- * Apple Liquid Glass + Government Design Language
+ * Apple iOS 26 + Google Material 3 + Government Digital Service (GDS)
  */
 
 export const Colors = {
-  primary: '#005BAC',
+  // Primary & Secondary Brand Colors
+  primary: '#005BAC',       // GVMC Navy Blue
   primaryLight: '#0070D4',
   primaryDark: '#004A8C',
-  secondary: '#00A6D6',
-  secondaryLight: '#00BDE6',
-  accent: '#00D4FF',
-  accentSoft: 'rgba(0, 212, 255, 0.15)',
+  secondary: '#0EA5E9',     // Sky Blue / Cyan Accent
+  secondaryLight: '#38BDF8',
+  secondaryDark: '#0284C7',
 
-  background: '#F6F8FB',
-  backgroundDark: '#EDF0F5',
+  // Accent & Soft Tint Colors
+  accent: '#0EA5E9',
+  accentSoft: 'rgba(14, 165, 233, 0.12)',
+
+  // Background & Surfaces
+  background: '#F5F7FA',     // Calm Municipal Neutral Grey-White
   surface: '#FFFFFF',
   surfaceElevated: '#FFFFFF',
 
-  card: 'rgba(255, 255, 255, 0.55)',
-  cardSolid: 'rgba(255, 255, 255, 0.85)',
-  cardBorder: 'rgba(255, 255, 255, 0.35)',
-  cardShadow: 'rgba(0, 91, 172, 0.08)',
+  // Glass Morphism & Card Surfaces
+  card: '#FFFFFF',
+  cardSolid: '#FFFFFF',
+  cardBorder: '#E7EDF5',
+  cardShadow: 'rgba(15, 23, 42, 0.04)',
 
-  glass: 'rgba(255, 255, 255, 0.55)',
-  glassBorder: 'rgba(255, 255, 255, 0.4)',
-  glassIntense: 'rgba(255, 255, 255, 0.75)',
-  glassDark: 'rgba(36, 52, 71, 0.06)',
+  glass: 'rgba(255, 255, 255, 0.65)',
+  glassBorder: '#E7EDF5',
+  glassIntense: 'rgba(255, 255, 255, 0.85)',
+  glassDark: 'rgba(15, 23, 42, 0.85)',
+  glassDarkBorder: 'rgba(255, 255, 255, 0.15)',
 
-  text: '#243447',
-  textSecondary: '#5A6B7D',
-  textTertiary: '#8A97A6',
+  // Typography & Text
+  text: '#0F172A',           // Slate 900
+  subtitle: '#64748B',       // Slate 500
+  textSecondary: '#64748B',
+  textTertiary: '#94A3B8',   // Slate 400
   textInverse: '#FFFFFF',
   textAccent: '#005BAC',
 
-  success: '#00C853',
-  successLight: 'rgba(0, 200, 83, 0.12)',
-  warning: '#FFC107',
-  warningLight: 'rgba(255, 193, 7, 0.12)',
-  danger: '#E53935',
-  dangerLight: 'rgba(229, 57, 53, 0.12)',
-  info: '#00A6D6',
-  infoLight: 'rgba(0, 166, 214, 0.12)',
+  // Status & Telemetry Indicators
+  success: '#22C55E',
+  successLight: 'rgba(34, 197, 94, 0.12)',
+  warning: '#F59E0B',
+  warningLight: 'rgba(245, 158, 11, 0.12)',
+  error: '#EF4444',
+  danger: '#EF4444',
+  dangerLight: 'rgba(239, 68, 68, 0.12)',
+  info: '#3B82F6',
+  infoLight: 'rgba(59, 130, 246, 0.12)',
 
-  divider: 'rgba(36, 52, 71, 0.08)',
-  overlay: 'rgba(0, 0, 0, 0.35)',
+  // Utility Colors
+  border: '#E7EDF5',
+  divider: '#E7EDF5',
+  overlay: 'rgba(15, 23, 42, 0.4)',
 
-  tabBar: 'rgba(255, 255, 255, 0.82)',
-  tabBarBorder: 'rgba(255, 255, 255, 0.5)',
+  // Bottom Navigation Bar
+  tabBar: 'rgba(255, 255, 255, 0.85)',
+  tabBarBorder: '#E7EDF5',
   tabActive: '#005BAC',
-  tabInactive: '#8A97A6',
+  tabInactive: '#94A3B8',
 
-  water: '#00A6D6',
-  waterLight: 'rgba(0, 166, 214, 0.15)',
-  waterDark: '#0089B3',
-  pipeline: '#00D4FF',
-  pipelineGlow: 'rgba(0, 212, 255, 0.3)',
+  // Map & Water Telemetry Specifics
+  water: '#0EA5E9',
+  waterLight: 'rgba(14, 165, 233, 0.15)',
+  waterDark: '#0284C7',
+  pipeline: '#38BDF8',
+  pipelineGlow: 'rgba(56, 189, 248, 0.35)',
 
-  mapDark: '#070d19',
-  mapNode: '#00e5ff',
+  mapDark: '#070D19',
+  mapNode: '#00E5FF',
   mapNodeGlow: 'rgba(0, 229, 255, 0.6)',
-  mapAlert: '#ef4444',
+  mapAlert: '#EF4444',
   mapAlertGlow: 'rgba(239, 68, 68, 0.8)',
-};
+} as const;
 
 export const Spacing = {
   xs: 4,
@@ -73,7 +87,7 @@ export const Spacing = {
   xxxl: 32,
   section: 40,
   screen: 20,
-};
+} as const;
 
 export const BorderRadius = {
   sm: 8,
@@ -81,36 +95,91 @@ export const BorderRadius = {
   lg: 16,
   xl: 20,
   xxl: 24,
+  card: 24,         // Exact global design system: 24px
+  button: 18,       // Exact global design system: 18px
+  bottomSheet: 32,  // Exact global design system: 32px
+  avatar: 26,       // Exact global design system: 26px
+  input: 16,
   pill: 999,
-  card: 20,
-  button: 14,
-  input: 14,
-};
+} as const;
 
 export const Typography = {
+  display: {
+    fontSize: 34,
+    fontWeight: '800' as const,
+    letterSpacing: -0.6,
+    lineHeight: 42,
+  },
+  pageTitle: {
+    fontSize: 30,
+    fontWeight: '700' as const,
+    letterSpacing: -0.4,
+    lineHeight: 38,
+  },
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: '700' as const,
+    letterSpacing: -0.2,
+    lineHeight: 28,
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: '600' as const,
+    letterSpacing: -0.1,
+    lineHeight: 24,
+  },
+  body: {
+    fontSize: 16,
+    fontWeight: '400' as const,
+    letterSpacing: -0.1,
+    lineHeight: 22,
+  },
+  bodyMedium: {
+    fontSize: 16,
+    fontWeight: '500' as const,
+    letterSpacing: -0.1,
+    lineHeight: 22,
+  },
+  caption: {
+    fontSize: 14,
+    fontWeight: '400' as const,
+    lineHeight: 18,
+  },
+  captionMedium: {
+    fontSize: 14,
+    fontWeight: '500' as const,
+    lineHeight: 18,
+  },
+  label: {
+    fontSize: 12,
+    fontWeight: '600' as const,
+    letterSpacing: 0.2,
+    lineHeight: 16,
+  },
+  // Backward compatibility aliases for existing components
   largeTitle: {
     fontSize: 34,
-    fontWeight: '700' as const,
-    letterSpacing: -0.5,
-    lineHeight: 41,
+    fontWeight: '800' as const,
+    letterSpacing: -0.6,
+    lineHeight: 42,
   },
   title1: {
-    fontSize: 28,
+    fontSize: 30,
     fontWeight: '700' as const,
-    letterSpacing: -0.3,
-    lineHeight: 34,
+    letterSpacing: -0.4,
+    lineHeight: 38,
   },
   title2: {
     fontSize: 22,
-    fontWeight: '600' as const,
+    fontWeight: '700' as const,
     letterSpacing: -0.2,
     lineHeight: 28,
   },
   title3: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: '600' as const,
     letterSpacing: -0.1,
-    lineHeight: 25,
+    lineHeight: 24,
   },
   headline: {
     fontSize: 17,
@@ -118,22 +187,10 @@ export const Typography = {
     letterSpacing: -0.1,
     lineHeight: 22,
   },
-  body: {
-    fontSize: 17,
-    fontWeight: '400' as const,
-    letterSpacing: -0.1,
-    lineHeight: 22,
-  },
-  bodyMedium: {
-    fontSize: 17,
-    fontWeight: '500' as const,
-    letterSpacing: -0.1,
-    lineHeight: 22,
-  },
   callout: {
     fontSize: 16,
     fontWeight: '400' as const,
-    lineHeight: 21,
+    lineHeight: 22,
   },
   subhead: {
     fontSize: 15,
@@ -156,73 +213,68 @@ export const Typography = {
     lineHeight: 18,
   },
   caption1: {
-    fontSize: 12,
+    fontSize: 14,
     fontWeight: '400' as const,
-    lineHeight: 16,
+    lineHeight: 18,
   },
   caption2: {
-    fontSize: 11,
-    fontWeight: '400' as const,
-    lineHeight: 13,
+    fontSize: 12,
+    fontWeight: '500' as const,
+    lineHeight: 16,
   },
-};
+} as const;
 
 export const Shadows = {
   sm: {
-    shadowColor: '#000',
+    shadowColor: '#0F172A',
     shadowOffset: { width: 0, height: 1 },
-    shadowOpacity: 0.05,
+    shadowOpacity: 0.03,
     shadowRadius: 3,
-    elevation: 2,
+    elevation: 1,
   },
   md: {
-    shadowColor: '#000',
+    shadowColor: '#0F172A',
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.08,
-    shadowRadius: 12,
-    elevation: 4,
+    shadowOpacity: 0.05,
+    shadowRadius: 10,
+    elevation: 3,
   },
   lg: {
-    shadowColor: '#000',
+    shadowColor: '#0F172A',
     shadowOffset: { width: 0, height: 8 },
-    shadowOpacity: 0.1,
-    shadowRadius: 24,
-    elevation: 8,
+    shadowOpacity: 0.07,
+    shadowRadius: 20,
+    elevation: 6,
   },
   glass: {
     shadowColor: Colors.primary,
     shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.06,
-    shadowRadius: 16,
-    elevation: 3,
+    shadowOpacity: 0.04,
+    shadowRadius: 12,
+    elevation: 2,
   },
   card: {
-    shadowColor: '#000',
+    shadowColor: '#0F172A',
     shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.06,
+    shadowOpacity: 0.04,
     shadowRadius: 8,
-    elevation: 3,
+    elevation: 2,
   },
-};
+} as const;
 
 export const BlurIntensity = {
-  light: 25,
-  medium: 40,
-  heavy: 60,
-};
+  light: 20,
+  medium: 35,
+  heavy: 55,
+} as const;
 
 export const Animation = {
   fast: 200,
   normal: 300,
   slow: 500,
   spring: {
-    damping: 15,
-    stiffness: 150,
+    damping: 18,
+    stiffness: 160,
     mass: 1,
   },
-  springBouncy: {
-    damping: 12,
-    stiffness: 180,
-    mass: 0.8,
-  },
-};
+} as const;

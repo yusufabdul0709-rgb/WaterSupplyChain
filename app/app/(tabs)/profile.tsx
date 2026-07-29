@@ -13,8 +13,12 @@ import {
   LogOut,
   HelpCircle,
   FileText,
+  Bell,
+  CreditCard,
+  ClipboardList,
+  CheckCircle2,
 } from 'lucide-react-native';
-import { Colors, Typography, Spacing } from '../../constants/theme';
+import { Colors, Typography, Spacing, BorderRadius } from '../../constants/theme';
 import { ProfileCard } from '../../components/profile/ProfileCard';
 import { InfoRow } from '../../components/profile/InfoRow';
 import { GlassCard } from '../../components/ui/GlassCard';
@@ -27,7 +31,7 @@ export default function ProfileScreen() {
   const logout = useAuthStore((state) => state.logout);
 
   const handleLogout = () => {
-    Alert.alert('Logout', 'Are you sure you want to log out of GVMC Water Portal?', [
+    Alert.alert('Logout Citizen Session', 'Are you sure you want to log out of GVMC Water Portal?', [
       { text: 'Cancel', style: 'cancel' },
       {
         text: 'Logout',
@@ -40,7 +44,7 @@ export default function ProfileScreen() {
     ]);
   };
 
-  const dummyUser = {
+  const citizenUser = {
     name: user?.name || 'Ramesh Kumar',
     phone: user?.phone || '+91 98480 12345',
     email: user?.email || 'ramesh.kumar@gvmc.citizen.in',
@@ -58,32 +62,32 @@ export default function ProfileScreen() {
   return (
     <View style={[styles.container, { paddingTop: insets.top + 10 }]}>
       <View style={styles.header}>
-        <Text style={styles.govtTitle}>CITIZEN PROFILE</Text>
+        <Text style={styles.govtTitle}>CITIZEN PROFILE PORTAL</Text>
         <Text style={styles.title}>Account & Preferences</Text>
       </View>
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
-        {/* Glass Profile Card */}
-        <ProfileCard user={dummyUser} />
+        {/* Section 1: Citizen Identity Card */}
+        <ProfileCard user={citizenUser} />
 
-        {/* Location & Connection Details */}
+        {/* Section 2: Municipal Information */}
         <GlassCard style={styles.card} intensity={40}>
-          <Text style={styles.cardSectionTitle}>MUNICIPAL LOCATION & CONNECTION</Text>
+          <Text style={styles.cardSectionTitle}>MUNICIPAL INFORMATION</Text>
 
           <InfoRow
             icon={<MapPin size={18} color={Colors.primary} />}
             label="Registered Address"
-            value={dummyUser.address}
+            value={citizenUser.address}
           />
           <InfoRow
             icon={<Building size={18} color={Colors.secondary} />}
-            label="Municipal Ward"
-            value={dummyUser.wardNumber}
+            label="Municipal Ward & Zone"
+            value={`${citizenUser.wardNumber} · ${citizenUser.zone}`}
           />
           <InfoRow
             icon={<Building size={18} color={Colors.primary} />}
-            label="Sector & Zone"
-            value={`${dummyUser.sectorName} (${dummyUser.zone})`}
+            label="Sector"
+            value={citizenUser.sectorName}
           />
           <InfoRow
             icon={<Phone size={18} color={Colors.success} />}
@@ -93,9 +97,40 @@ export default function ProfileScreen() {
           />
         </GlassCard>
 
-        {/* Settings & Preferences */}
+        {/* Section 3: Statistics */}
         <GlassCard style={styles.card} intensity={40}>
-          <Text style={styles.cardSectionTitle}>APP PREFERENCES</Text>
+          <Text style={styles.cardSectionTitle}>ACTIVITY STATISTICS</Text>
+
+          <View style={styles.statsRow}>
+            <View style={styles.statBox}>
+              <ClipboardList size={18} color={Colors.primary} />
+              <Text style={styles.statVal}>4</Text>
+              <Text style={styles.statLbl}>Complaints</Text>
+            </View>
+
+            <View style={styles.statBox}>
+              <CheckCircle2 size={18} color={Colors.success} />
+              <Text style={[styles.statVal, { color: Colors.success }]}>3</Text>
+              <Text style={styles.statLbl}>Resolved</Text>
+            </View>
+
+            <View style={styles.statBox}>
+              <CreditCard size={18} color={Colors.secondary} />
+              <Text style={[styles.statVal, { color: Colors.secondary }]}>12</Text>
+              <Text style={styles.statLbl}>Bills Paid</Text>
+            </View>
+
+            <View style={styles.statBox}>
+              <FileText size={18} color={Colors.info} />
+              <Text style={[styles.statVal, { color: Colors.info }]}>2</Text>
+              <Text style={styles.statLbl}>Reports</Text>
+            </View>
+          </View>
+        </GlassCard>
+
+        {/* Section 4: Preferences */}
+        <GlassCard style={styles.card} intensity={40}>
+          <Text style={styles.cardSectionTitle}>PREFERENCES & SECURITY</Text>
 
           <TouchableOpacity onPress={() => router.push('/settings')}>
             <InfoRow
@@ -107,46 +142,64 @@ export default function ProfileScreen() {
 
           <TouchableOpacity onPress={() => router.push('/settings')}>
             <InfoRow
-              icon={<Moon size={18} color={Colors.secondary} />}
-              label="Theme Mode"
-              value="System / Light Glass"
+              icon={<Bell size={18} color={Colors.secondary} />}
+              label="Push Notifications"
+              value="Water Supply & Alerts Enabled"
             />
           </TouchableOpacity>
 
           <TouchableOpacity onPress={() => router.push('/settings')}>
             <InfoRow
-              icon={<Lock size={18} color={Colors.primary} />}
+              icon={<Moon size={18} color={Colors.primary} />}
+              label="Theme Mode"
+              value="System / Apple Glass"
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => router.push('/settings')}>
+            <InfoRow
+              icon={<Lock size={18} color={Colors.success} />}
               label="Biometric Face ID"
               value="Enabled"
+            />
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => router.push('/settings')}>
+            <InfoRow
+              icon={<ShieldCheck size={18} color={Colors.info} />}
+              label="Privacy & Data Sharing"
+              value="AMRUT 2.0 Encrypted"
               isLast
             />
           </TouchableOpacity>
         </GlassCard>
 
-        {/* Emergency Contacts */}
+        {/* Section 5: Support & Helplines */}
         <GlassCard style={styles.card} intensity={40}>
-          <Text style={styles.cardSectionTitle}>EMERGENCY HELPLINE</Text>
+          <Text style={styles.cardSectionTitle}>EMERGENCY SUPPORT & HELPLINE</Text>
 
           <InfoRow
-            icon={<Phone size={18} color={Colors.danger} />}
-            label="GVMC Water Helpline"
-            value="1800-425-0001 (Toll Free)"
+            icon={<Phone size={18} color={Colors.error} />}
+            label="GVMC Water Toll-Free"
+            value="1800-425-0001 (24x7)"
           />
           <InfoRow
             icon={<HelpCircle size={18} color={Colors.primary} />}
-            label="Smart City Support"
+            label="Smart City Support Email"
             value="support@gvmc.gov.in"
             isLast
           />
         </GlassCard>
 
-        {/* Logout Button */}
+        {/* Section 6: Logout */}
         <TouchableOpacity activeOpacity={0.8} onPress={handleLogout} style={styles.logoutBtn}>
-          <LogOut size={20} color={Colors.danger} />
+          <LogOut size={18} color={Colors.error} />
           <Text style={styles.logoutText}>Logout Citizen Session</Text>
         </TouchableOpacity>
 
-        <Text style={styles.appVersion}>GVMC Smart Water App v1.0.0 · AMRUT 2.0 Digital Public Goods</Text>
+        <Text style={styles.appVersion}>
+          Greater Visakhapatnam Municipal Corporation · AMRUT 2.0 Digital Public Goods v1.0.0
+        </Text>
       </ScrollView>
     </View>
   );
@@ -162,30 +215,60 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   govtTitle: {
-    ...Typography.caption1,
+    ...Typography.label,
     fontWeight: '700',
     color: Colors.primary,
     letterSpacing: 1.2,
   },
   title: {
-    ...Typography.title1,
+    ...Typography.pageTitle,
     color: Colors.text,
-    marginTop: 2,
+    fontSize: 26,
+    marginTop: 1,
   },
   scrollContent: {
     paddingHorizontal: Spacing.screen,
     paddingBottom: 120,
   },
   card: {
-    padding: 16,
+    padding: 18,
     marginBottom: 16,
+    borderRadius: BorderRadius.card, // 24px
   },
   cardSectionTitle: {
-    ...Typography.caption1,
+    ...Typography.label,
     fontWeight: '700',
     color: Colors.primary,
     letterSpacing: 1.2,
-    marginBottom: 8,
+    marginBottom: 10,
+  },
+  statsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 4,
+  },
+  statBox: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'rgba(245, 247, 250, 0.8)',
+    paddingVertical: 12,
+    borderRadius: BorderRadius.md,
+    marginHorizontal: 3,
+    borderWidth: 1,
+    borderColor: Colors.border,
+  },
+  statVal: {
+    ...Typography.sectionTitle,
+    color: Colors.primary,
+    fontWeight: '800',
+    fontSize: 18,
+    marginTop: 4,
+  },
+  statLbl: {
+    ...Typography.caption2,
+    color: Colors.textSecondary,
+    fontSize: 10,
+    marginTop: 1,
   },
   logoutBtn: {
     flexDirection: 'row',
@@ -193,15 +276,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: Colors.dangerLight,
     paddingVertical: 14,
-    borderRadius: 16,
+    borderRadius: BorderRadius.button, // 18px
     borderWidth: 1,
-    borderColor: 'rgba(229, 57, 53, 0.3)',
-    marginTop: 10,
+    borderColor: 'rgba(239, 68, 68, 0.25)',
+    marginTop: 8,
     marginBottom: 16,
   },
   logoutText: {
-    ...Typography.subheadMedium,
-    color: Colors.danger,
+    ...Typography.bodyMedium,
+    color: Colors.error,
     fontWeight: '700',
     marginLeft: 8,
   },
@@ -210,5 +293,6 @@ const styles = StyleSheet.create({
     color: Colors.textTertiary,
     textAlign: 'center',
     marginBottom: 20,
+    fontSize: 11,
   },
 });

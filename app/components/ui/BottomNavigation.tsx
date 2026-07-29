@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, View, TouchableOpacity, Dimensions } from 'react-native';
 import { BlurView } from 'expo-blur';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { Home, Map, ClipboardList, Bot, User } from 'lucide-react-native';
 import { useRouter, usePathname } from 'expo-router';
 import * as Haptics from 'expo-haptics';
-import { Colors, Typography, BlurIntensity, Shadows } from '../../constants/theme';
+import { Colors, BlurIntensity, Shadows } from '../../constants/theme';
 
 const { width } = Dimensions.get('window');
 
@@ -13,15 +13,14 @@ interface TabItem {
   name: string;
   route: string;
   icon: any;
-  label: string;
 }
 
 const TABS: TabItem[] = [
-  { name: 'home', route: '/(tabs)/home', icon: Home, label: 'Home' },
-  { name: 'map', route: '/(tabs)/map', icon: Map, label: 'Map' },
-  { name: 'complaints', route: '/(tabs)/complaints', icon: ClipboardList, label: 'Complaints' },
-  { name: 'ai', route: '/(tabs)/ai', icon: Bot, label: 'AI Assistant' },
-  { name: 'profile', route: '/(tabs)/profile', icon: User, label: 'Profile' },
+  { name: 'home', route: '/(tabs)/home', icon: Home },
+  { name: 'map', route: '/(tabs)/map', icon: Map },
+  { name: 'complaints', route: '/(tabs)/complaints', icon: ClipboardList },
+  { name: 'ai', route: '/(tabs)/ai', icon: Bot },
+  { name: 'profile', route: '/(tabs)/profile', icon: User },
 ];
 
 export function BottomNavigation() {
@@ -46,7 +45,7 @@ export function BottomNavigation() {
             return (
               <TouchableOpacity
                 key={tab.name}
-                activeOpacity={0.7}
+                activeOpacity={0.75}
                 onPress={() => handleTabPress(tab.route)}
                 style={styles.tabButton}
               >
@@ -54,19 +53,10 @@ export function BottomNavigation() {
                   <Icon
                     size={22}
                     color={isActive ? Colors.primary : Colors.textTertiary}
-                    strokeWidth={isActive ? 2.3 : 1.8}
+                    strokeWidth={isActive ? 2.2 : 1.8}
                   />
+                  {isActive && <View style={styles.activeDot} />}
                 </View>
-
-                <Text
-                  style={[
-                    styles.tabLabel,
-                    { color: isActive ? Colors.primary : Colors.textTertiary },
-                    isActive && styles.activeTabLabel,
-                  ]}
-                >
-                  {tab.label}
-                </Text>
               </TouchableOpacity>
             );
           })}
@@ -87,20 +77,20 @@ const styles = StyleSheet.create({
     pointerEvents: 'box-none',
   },
   floatingContainer: {
-    width: width - 32,
-    borderRadius: 28,
+    width: width - 40,
+    borderRadius: 32,
     overflow: 'hidden',
-    backgroundColor: 'rgba(255, 255, 255, 0.82)',
+    backgroundColor: 'rgba(255, 255, 255, 0.85)',
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.6)',
+    borderColor: '#E7EDF5',
     ...Shadows.lg,
   },
   tabBar: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-around',
-    height: 64,
-    paddingHorizontal: 8,
+    height: 60,
+    paddingHorizontal: 12,
   },
   tabButton: {
     flex: 1,
@@ -109,20 +99,22 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   iconWrapper: {
-    width: 38,
-    height: 34,
-    borderRadius: 17,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
     justifyContent: 'center',
     alignItems: 'center',
+    position: 'relative',
   },
   activeIconWrapper: {
-    backgroundColor: 'rgba(0, 91, 172, 0.1)',
+    backgroundColor: 'rgba(0, 91, 172, 0.08)',
   },
-  tabLabel: {
-    ...Typography.caption2,
-    marginTop: 2,
-  },
-  activeTabLabel: {
-    fontWeight: '700',
+  activeDot: {
+    position: 'absolute',
+    bottom: 4,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
+    backgroundColor: Colors.primary,
   },
 });

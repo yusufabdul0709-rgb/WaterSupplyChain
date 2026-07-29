@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, FlatList, TouchableOpacity } from 'react-native
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
 import { ArrowLeft, Bell, CheckCheck, Droplets, Wrench, ShieldAlert, CloudRain } from 'lucide-react-native';
-import { Colors, Typography, Spacing } from '../constants/theme';
+import { Colors, Typography, Spacing, BorderRadius } from '../constants/theme';
 import { GlassCard } from '../components/ui/GlassCard';
 import { MOCK_NOTIFICATIONS, NotificationItem } from '../data/mockNotifications';
 
@@ -20,15 +20,15 @@ export default function NotificationsScreen() {
     switch (type) {
       case 'SUPPLY_START':
       case 'SUPPLY_END':
-        return <Droplets size={20} color={Colors.primary} />;
+        return <Droplets size={18} color={Colors.primary} />;
       case 'MAINTENANCE':
-        return <Wrench size={20} color={Colors.warning} />;
+        return <Wrench size={18} color={Colors.warning} />;
       case 'WEATHER_ALERT':
-        return <CloudRain size={20} color={Colors.secondary} />;
+        return <CloudRain size={18} color={Colors.secondary} />;
       case 'EMERGENCY':
       case 'QUALITY_ALERT':
       default:
-        return <ShieldAlert size={20} color={Colors.danger} />;
+        return <ShieldAlert size={18} color={Colors.error} />;
     }
   };
 
@@ -36,11 +36,11 @@ export default function NotificationsScreen() {
     <View style={[styles.container, { paddingTop: insets.top + 10 }]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <ArrowLeft size={22} color={Colors.text} />
+          <ArrowLeft size={20} color={Colors.text} />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Notifications</Text>
+        <Text style={styles.headerTitle}>Municipal Bulletins</Text>
         <TouchableOpacity onPress={markAllRead} style={styles.markReadBtn}>
-          <CheckCheck size={20} color={Colors.primary} />
+          <CheckCheck size={18} color={Colors.primary} />
         </TouchableOpacity>
       </View>
 
@@ -50,20 +50,18 @@ export default function NotificationsScreen() {
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.listContent}
         renderItem={({ item }) => (
-          <GlassCard style={[styles.card, !item.isRead && styles.unreadCard]} intensity={45}>
-            <View style={styles.cardRow}>
-              <View style={[styles.iconCircle, !item.isRead && styles.unreadIconCircle]}>
-                {getIcon(item.type)}
-              </View>
-
-              <View style={styles.contentGroup}>
-                <View style={styles.topRow}>
-                  <Text style={styles.title} numberOfLines={1}>
-                    {item.title}
-                  </Text>
-                  <Text style={styles.time}>{item.timestamp}</Text>
+          <GlassCard
+            style={[styles.itemCard, !item.isRead && styles.unreadCard]}
+            intensity={40}
+          >
+            <View style={styles.itemRow}>
+              <View style={styles.iconCircle}>{getIcon(item.type)}</View>
+              <View style={styles.itemContent}>
+                <View style={styles.itemTitleRow}>
+                  <Text style={styles.itemTitle}>{item.title}</Text>
+                  <Text style={styles.itemTime}>{item.timestamp}</Text>
                 </View>
-                <Text style={styles.desc}>{item.description}</Text>
+                <Text style={styles.itemDesc}>{item.description}</Text>
               </View>
             </View>
           </GlassCard>
@@ -83,25 +81,27 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: Spacing.screen,
-    marginBottom: 16,
+    marginBottom: 14,
   },
   backBtn: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.65)',
+    backgroundColor: Colors.surface,
+    borderWidth: 1,
+    borderColor: Colors.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
   headerTitle: {
-    ...Typography.title3,
+    ...Typography.cardTitle,
     color: Colors.text,
   },
   markReadBtn: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(0, 91, 172, 0.1)',
+    backgroundColor: 'rgba(0, 91, 172, 0.08)',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -109,51 +109,50 @@ const styles = StyleSheet.create({
     paddingHorizontal: Spacing.screen,
     paddingBottom: 40,
   },
-  card: {
+  itemCard: {
     padding: 16,
     marginBottom: 12,
+    borderRadius: BorderRadius.card, // 24px
   },
   unreadCard: {
-    borderColor: Colors.primary,
-    backgroundColor: 'rgba(255, 255, 255, 0.85)',
+    borderColor: 'rgba(0, 91, 172, 0.3)',
+    backgroundColor: 'rgba(255, 255, 255, 0.95)',
   },
-  cardRow: {
+  itemRow: {
     flexDirection: 'row',
     alignItems: 'flex-start',
   },
   iconCircle: {
-    width: 42,
-    height: 42,
-    borderRadius: 21,
+    width: 38,
+    height: 38,
+    borderRadius: 19,
     backgroundColor: 'rgba(0, 91, 172, 0.08)',
     justifyContent: 'center',
     alignItems: 'center',
     marginRight: 12,
   },
-  unreadIconCircle: {
-    backgroundColor: 'rgba(0, 91, 172, 0.18)',
-  },
-  contentGroup: {
+  itemContent: {
     flex: 1,
   },
-  topRow: {
+  itemTitleRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
   },
-  title: {
-    ...Typography.subheadMedium,
+  itemTitle: {
+    ...Typography.bodyMedium,
     color: Colors.text,
     fontWeight: '700',
+    fontSize: 15,
     flex: 1,
   },
-  time: {
+  itemTime: {
     ...Typography.caption2,
     color: Colors.textTertiary,
     marginLeft: 8,
   },
-  desc: {
-    ...Typography.footnote,
+  itemDesc: {
+    ...Typography.caption,
     color: Colors.textSecondary,
     marginTop: 4,
     lineHeight: 18,

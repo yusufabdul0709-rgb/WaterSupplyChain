@@ -31,9 +31,11 @@ export function GlassCard({
     }
   };
 
+  const isDark = variant === 'dark';
+
   return (
     <View style={[getVariantStyle(), style]}>
-      <BlurView intensity={intensity} tint="light" style={StyleSheet.absoluteFill} />
+      <BlurView intensity={intensity} tint={isDark ? 'dark' : 'light'} style={StyleSheet.absoluteFill} />
       <View style={styles.content}>{children}</View>
     </View>
   );
@@ -41,34 +43,36 @@ export function GlassCard({
 
 const styles = StyleSheet.create({
   card: {
-    borderRadius: BorderRadius.card,
+    borderRadius: BorderRadius.card, // 24px
     overflow: 'hidden',
-    backgroundColor: Colors.glass,
+    backgroundColor: 'rgba(255, 255, 255, 0.75)',
     borderWidth: 1,
-    borderColor: Colors.glassBorder,
-    ...Shadows.glass,
+    borderColor: Colors.border, // #E7EDF5
+    ...Shadows.card,
   },
   elevated: {
-    backgroundColor: Colors.cardSolid,
-    borderColor: 'rgba(255, 255, 255, 0.6)',
-    ...Shadows.lg,
+    backgroundColor: Colors.surface,
+    borderColor: Colors.border,
+    ...Shadows.md,
   },
   flat: {
-    backgroundColor: 'rgba(255, 255, 255, 0.4)',
-    borderWidth: 0,
+    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+    borderColor: Colors.border,
     shadowOpacity: 0,
     elevation: 0,
   },
   outlined: {
-    backgroundColor: 'rgba(255, 255, 255, 0.25)',
+    backgroundColor: 'rgba(255, 255, 255, 0.8)',
     borderWidth: 1.5,
-    borderColor: Colors.primaryLight,
+    borderColor: Colors.primary,
   },
   dark: {
-    backgroundColor: 'rgba(7, 13, 25, 0.75)',
-    borderColor: 'rgba(0, 229, 255, 0.2)',
+    backgroundColor: 'rgba(15, 23, 42, 0.82)',
+    borderColor: Colors.glassDarkBorder,
+    ...Shadows.lg,
   },
   content: {
-    padding: 16,
+    position: 'relative',
+    zIndex: 1,
   },
 });

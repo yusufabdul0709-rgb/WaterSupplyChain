@@ -1,19 +1,13 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text, TouchableOpacity, Dimensions } from 'react-native';
+import { StyleSheet, View, Text, TextInput, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Layers, RefreshCw, AlertTriangle, ShieldCheck } from 'lucide-react-native';
-import { Colors, Typography } from '../../constants/theme';
-import { MAP_NODES, MAP_PIPES, SECTOR_MAP_VIEWS } from '../../constants/sectors';
-import { MAPBOX_ACCESS_TOKEN } from '../../constants/api';
+import { RefreshCw, Navigation, Search, Layers, ShieldCheck } from 'lucide-react-native';
+import { Colors, Typography, BorderRadius } from '../../constants/theme';
+import { SECTOR_MAP_VIEWS } from '../../constants/sectors';
 import { useAuthStore } from '../../store/authStore';
-import { MapMarker } from '../../components/map/MapMarker';
 import { SectorSheet } from '../../components/map/SectorSheet';
 import { Mapbox3DWebView } from '../../components/map/Mapbox3DWebView';
-import { useQuery } from '@tanstack/react-query';
-import { networkService } from '../../services/networkService';
-import { complaintService } from '../../services/complaintService';
-
-const { width, height } = Dimensions.get('window');
+import * as Haptics from 'expo-haptics';
 
 export default function DigitalTwinMapScreen() {
   const insets = useSafeAreaInsets();
@@ -22,38 +16,57 @@ export default function DigitalTwinMapScreen() {
   const sectorView = SECTOR_MAP_VIEWS[sectorId] || SECTOR_MAP_VIEWS.ALL;
 
   const [selectedFilter, setSelectedFilter] = useState('ALL');
+  const [searchQuery, setSearchQuery] = useState('');
 
-  const { data: nodesData } = useQuery({
-    queryKey: ['networkNodes'],
-    queryFn: () => networkService.getNodes(),
-    refetchInterval: 10000,
-  });
+  const handleRefresh = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  };
 
-  const { data: complaintsData } = useQuery({
-    queryKey: ['sectorComplaints', sectorId],
-    queryFn: () => complaintService.listComplaints(sectorId),
-  });
-
-  const complaints = complaintsData?.data || [];
+  const handleGPSLocation = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+  };
 
   return (
     <View style={styles.container}>
-      {/* 3D Mapbox GL Digital Twin View Bypassing Google Maps */}
+      {/* 3D Mapbox GL Digital Twin View */}
       <Mapbox3DWebView sectorView={sectorView} selectedFilter={selectedFilter} />
 
-      {/* Top Floating Header Controls */}
-      <View style={[styles.topHeader, { paddingTop: insets.top + 10 }]}>
-        <View style={styles.badgeContainer}>
-          <View style={styles.liveDot} />
-          <Text style={styles.badgeText}>VISAKHAPATNAM DIGITAL TWIN · {user?.sectorName || 'MVP COLONY'}</Text>
+      {/* Top Floating Controls Header */}
+      <View style={[styles.topHeaderContainer, { paddingTop: insets.top + 10 }]}>
+        {/* Floating Search Bar */}
+        <View style={styles.searchBar}>
+          <Search size={18} color={Colors.textSecondary} />
+          <TextInput
+            style={styles.searchInput}
+            placeholder="Search Sector, Ward, Pipeline, Valve..."
+            placeholderTextColor={Colors.textTertiary}
+            value={searchQuery}
+            onChangeText={setSearchQuery}
+          />
         </View>
 
-        <TouchableOpacity style={styles.refreshBtn}>
-          <RefreshCw size={16} color={Colors.accent} />
-        </TouchableOpacity>
+        {/* Sector Tag & Quick Map Actions Row */}
+        <View style={styles.controlsRow}>
+          <View style={styles.sectorBadge}>
+            <View style={styles.liveDot} />
+            <Text style={styles.sectorBadgeText}>
+              {user?.wardNumber || 'WARD 42'} · {user?.sectorName || 'MVP COLONY'}
+            </Text>
+          </View>
+
+          <View style={styles.actionsGroup}>
+            <TouchableOpacity onPress={handleGPSLocation} style={styles.iconBtn}>
+              <Navigation size={16} color={Colors.secondary} />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={handleRefresh} style={styles.iconBtn}>
+              <RefreshCw size={16} color={Colors.secondary} />
+            </TouchableOpacity>
+          </View>
+        </View>
       </View>
 
-      {/* Bottom Sheet Sector Control Overlay */}
+      {/* Collapsible Apple Maps-Style Sector Control Overlay */}
       <SectorSheet
         sector={{
           id: sectorId,
@@ -76,48 +89,78 @@ export default function DigitalTwinMapScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#070d19',
+    backgroundColor: '#070D19',
   },
-  topHeader: {
+  topHeaderContainer: {
     position: 'absolute',
     top: 0,
     left: 16,
     right: 16,
+    zIndex: 900,
+  },
+  searchBar: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    backgroundColor: 'rgba(15, 23, 42, 0.88)',
+    borderRadius: 24,
+    paddingHorizontal: 14,
+    height: 48,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 255, 255, 0.15)',
+    marginBottom: 10,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  searchInput: {
+    flex: 1,
+    ...Typography.body,
+    color: Colors.textInverse,
+    fontSize: 14,
+    marginLeft: 8,
+  },
+  controlsRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    zIndex: 900,
   },
-  badgeContainer: {
+  sectorBadge: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(7, 13, 25, 0.85)',
+    backgroundColor: 'rgba(15, 23, 42, 0.88)',
     paddingHorizontal: 12,
     paddingVertical: 8,
     borderRadius: 20,
     borderWidth: 1,
-    borderColor: 'rgba(0, 229, 255, 0.3)',
+    borderColor: 'rgba(14, 165, 233, 0.3)',
   },
   liveDot: {
     width: 8,
     height: 8,
     borderRadius: 4,
-    backgroundColor: '#00e5ff',
+    backgroundColor: Colors.secondary,
     marginRight: 8,
   },
-  badgeText: {
-    ...Typography.caption2,
-    color: Colors.accent,
+  sectorBadgeText: {
+    ...Typography.label,
+    color: Colors.secondary,
     fontWeight: '800',
+    fontSize: 11,
   },
-  refreshBtn: {
-    width: 36,
-    height: 36,
-    borderRadius: 18,
-    backgroundColor: 'rgba(7, 13, 25, 0.85)',
+  actionsGroup: {
+    flexDirection: 'row',
+  },
+  iconBtn: {
+    width: 38,
+    height: 38,
+    borderRadius: 19,
+    backgroundColor: 'rgba(15, 23, 42, 0.88)',
     borderWidth: 1,
-    borderColor: 'rgba(0, 229, 255, 0.3)',
+    borderColor: 'rgba(14, 165, 233, 0.3)',
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 8,
   },
 });
