@@ -41,3 +41,9 @@ venv/
 *.db
 *.sqlite
 *.sqlite3
+
+# GIS sources & heavy datasets
+GIS sources/
+*.zip
+*.geopackage
+

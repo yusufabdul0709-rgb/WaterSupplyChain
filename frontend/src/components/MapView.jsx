@@ -2,7 +2,12 @@ import React, { useEffect, useRef, useState } from 'react';
 import Map, { Marker, Popup, Source, Layer, NavigationControl, FullscreenControl } from 'react-map-gl/mapbox';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
+import mapboxgl from 'mapbox-gl';
+
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
+if (typeof window !== 'undefined') {
+  mapboxgl.accessToken = MAPBOX_TOKEN;
+}
 
 // Sleek 3D Micro Icon Marker
 const Custom3DIcon = ({ text, isAlert, glowColor }) => {

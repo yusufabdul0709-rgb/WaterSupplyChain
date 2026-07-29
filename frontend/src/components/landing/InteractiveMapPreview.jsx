@@ -5,7 +5,12 @@ import { Layers, ShieldCheck, Cpu, Droplets, MapPin, ArrowRight } from 'lucide-r
 import GlassCard from './GlassCard';
 import GlassButton from './GlassButton';
 
+import mapboxgl from 'mapbox-gl';
+
 const MAPBOX_TOKEN = import.meta.env.VITE_MAPBOX_TOKEN;
+if (typeof window !== 'undefined') {
+  mapboxgl.accessToken = MAPBOX_TOKEN;
+}
 
 // Futuristic 3D Glowing Node Marker Icon Matching Screenshot Reference
 const Preview3DIcon = ({ label, iconSymbol, isAlert }) => {
