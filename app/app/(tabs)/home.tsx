@@ -4,13 +4,15 @@ import { useRouter } from 'expo-router';
 import { Colors, Typography, Spacing } from '../../constants/theme';
 import { AnimatedHeader } from '../../components/ui/AnimatedHeader';
 import { WaterStatusCard } from '../../components/home/WaterStatusCard';
+import { ScheduleTimelineCard } from '../../components/home/ScheduleTimelineCard';
 import { QuickActionCard } from '../../components/home/QuickActionCard';
-import { NetworkHealthCard } from '../../components/home/NetworkHealthCard';
-import { WaterQualityCard } from '../../components/home/WaterQualityCard';
+import { LatestComplaintCard } from '../../components/home/LatestComplaintCard';
 import { NotificationPreview } from '../../components/home/NotificationPreview';
 import { ISSUE_TYPES, IssueType } from '../../data/issueTypes';
 import { useAuthStore } from '../../store/authStore';
 import { useWaterStatus } from '../../hooks/useWaterStatus';
+import { useQuery } from '@tanstack/react-query';
+import { complaintService } from '../../services/complaintService';
 import { MOCK_NOTIFICATIONS } from '../../data/mockNotifications';
 
 export default function HomeScreen() {
@@ -19,11 +21,18 @@ export default function HomeScreen() {
   const [refreshing, setRefreshing] = useState(false);
 
   const sectorId = user?.sectorId || 'SEC_MVP';
-  const { schedule, nodes } = useWaterStatus(sectorId);
+  const { schedule, isLoadingSchedule } = useWaterStatus(sectorId);
+
+  const { data: complaintsData, refetch: refetchComplaints } = useQuery({
+    queryKey: ['myComplaints', sectorId],
+    queryFn: () => complaintService.listComplaints(sectorId),
+  });
+
+  const latestComplaint = complaintsData?.data?.[0];
 
   const handleRefresh = async () => {
     setRefreshing(true);
-    await new Promise((r) => setTimeout(r, 1000));
+    await refetchComplaints();
     setRefreshing(false);
   };
 
@@ -34,46 +43,48 @@ export default function HomeScreen() {
     });
   };
 
+  // Filter 8 primary quick action items requested by user:
+  // Leak, No Water, Low Pressure, Dirty Water, Illegal Connection, Overflow, Broken Pipe, New Connection
+  const quickActionsList = ISSUE_TYPES.slice(0, 8);
+
   return (
     <View style={styles.container}>
       <AnimatedHeader
         userName={user?.name || 'Ramesh Kumar'}
         sectorName={user?.sectorName || 'MVP Colony Sector'}
         wardNumber={user?.wardNumber || 'Ward 42'}
+        zone={user?.zone || 'Zone 2'}
       />
 
       <ScrollView
         showsVerticalScrollIndicator={false}
         contentContainerStyle={styles.scrollContent}
-        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor={Colors.primary} />}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={handleRefresh} tintColor={Colors.primary} />
+        }
       >
-        {/* Today's Water Supply Card */}
+        {/* 1. Today's Water Status Hero Card */}
         <WaterStatusCard schedule={schedule} />
 
-        {/* Quick Actions Grid Header */}
+        {/* 2. Today's Schedule Timeline Card */}
+        <ScheduleTimelineCard schedule={schedule} />
+
+        {/* 3. Quick Actions Grid (8 Items) */}
         <View style={styles.sectionHeaderRow}>
           <Text style={styles.sectionTitle}>QUICK ACTIONS</Text>
-          <Text style={styles.sectionSubtitle}>Report issues or make requests</Text>
+          <Text style={styles.sectionSubtitle}>Report issues or request municipal services</Text>
         </View>
 
         <View style={styles.actionsGrid}>
-          {ISSUE_TYPES.map((item) => (
+          {quickActionsList.map((item) => (
             <QuickActionCard key={item.id} item={item} onPress={handleQuickAction} />
           ))}
         </View>
 
-        {/* Municipal Network Telemetry */}
-        <NetworkHealthCard totalNodes={nodes.length || 15} />
+        {/* 4. Latest Complaint Status Preview */}
+        <LatestComplaintCard complaint={latestComplaint} />
 
-        {/* Water Quality Indicators */}
-        <WaterQualityCard
-          wqi={schedule?.waterQualityIndex}
-          ph={schedule?.phLevel}
-          chlorine={schedule?.chlorinePpm}
-          turbidity={schedule?.turbidityNtu}
-        />
-
-        {/* Recent Notifications Feed */}
+        {/* 5. Recent Notifications Feed */}
         <NotificationPreview items={MOCK_NOTIFICATIONS} />
       </ScrollView>
     </View>
@@ -93,13 +104,13 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   sectionTitle: {
-    ...Typography.caption1,
+    ...Typography.label,
     fontWeight: '700',
     color: Colors.primary,
     letterSpacing: 1.2,
   },
   sectionSubtitle: {
-    ...Typography.footnote,
+    ...Typography.caption,
     color: Colors.textSecondary,
     marginTop: 2,
   },
@@ -107,6 +118,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     flexWrap: 'wrap',
     justifyContent: 'space-between',
-    marginBottom: 12,
+    marginBottom: 8,
   },
 });

@@ -1,10 +1,34 @@
 /**
  * API Configuration — Backend endpoints and base URLs
+ *
+ * Auto-detects the dev machine's IP from Expo's debugger host so the app
+ * works on emulators, simulators, and physical devices without hardcoding.
  */
+import Constants from 'expo-constants';
+import { Platform } from 'react-native';
 
-// For Android Emulator use 10.0.2.2, for iOS Simulator use localhost
-// For physical device, use your machine's LAN IP
-export const API_BASE_URL = 'http://172.27.85.183:8000';
+const BACKEND_PORT = 8000;
+
+function getApiBaseUrl(): string {
+  // In Expo Go / dev-client, the debugger host contains the dev machine's IP
+  const debuggerHost =
+    Constants.expoGoConfig?.debuggerHost ??
+    Constants.expoConfig?.hostUri;
+
+  if (debuggerHost) {
+    // debuggerHost is "192.168.x.x:8081" — strip the Expo port and use backend port
+    const host = debuggerHost.split(':')[0];
+    return `http://${host}:${BACKEND_PORT}`;
+  }
+
+  // Fallback for Android emulator / web / production
+  if (Platform.OS === 'android') {
+    return `http://10.0.2.2:${BACKEND_PORT}`; // Android emulator loopback
+  }
+  return `http://localhost:${BACKEND_PORT}`;
+}
+
+export const API_BASE_URL = getApiBaseUrl();
 
 export const MAPBOX_ACCESS_TOKEN = process.env.EXPO_PUBLIC_MAPBOX_TOKEN || '';
 

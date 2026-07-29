@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, View, Text, TouchableOpacity } from 'react-native';
 import { Bell, ArrowRight, Droplets, Wrench, ShieldAlert } from 'lucide-react-native';
 import { useRouter } from 'expo-router';
-import { Colors, Typography } from '../../constants/theme';
+import { Colors, Typography, BorderRadius } from '../../constants/theme';
 import { GlassCard } from '../ui/GlassCard';
 import { NotificationItem } from '../../data/mockNotifications';
 
@@ -23,7 +23,7 @@ export function NotificationPreview({ items }: NotificationPreviewProps) {
       case 'EMERGENCY':
       case 'QUALITY_ALERT':
       default:
-        return <ShieldAlert size={16} color={Colors.danger} />;
+        return <ShieldAlert size={16} color={Colors.error} />;
     }
   };
 
@@ -31,8 +31,8 @@ export function NotificationPreview({ items }: NotificationPreviewProps) {
     <GlassCard style={styles.card} intensity={40}>
       <View style={styles.header}>
         <View style={styles.headerTitle}>
-          <Bell size={18} color={Colors.primary} />
-          <Text style={styles.title}>Recent Notifications</Text>
+          <Text style={styles.sectionHeader}>RECENT NOTIFICATIONS</Text>
+          <Text style={styles.title}>Municipal Bulletins</Text>
         </View>
         <TouchableOpacity onPress={() => router.push('/notifications')} style={styles.viewAll}>
           <Text style={styles.viewAllText}>View All</Text>
@@ -41,12 +41,12 @@ export function NotificationPreview({ items }: NotificationPreviewProps) {
       </View>
 
       <View style={styles.list}>
-        {items.slice(0, 3).map((item) => (
+        {items.slice(0, 3).map((item, index) => (
           <TouchableOpacity
             key={item.id}
             activeOpacity={0.7}
             onPress={() => router.push('/notifications')}
-            style={styles.itemRow}
+            style={[styles.itemRow, index === Math.min(items.length, 3) - 1 && styles.lastItem]}
           >
             <View style={styles.iconCircle}>{getIcon(item.type)}</View>
             <View style={styles.itemContent}>
@@ -69,31 +69,33 @@ export function NotificationPreview({ items }: NotificationPreviewProps) {
 
 const styles = StyleSheet.create({
   card: {
-    padding: 16,
+    padding: 20,
     marginBottom: 100, // Extra margin for floating bottom tab bar
   },
   header: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 12,
+    marginBottom: 14,
   },
-  headerTitle: {
-    flexDirection: 'row',
-    alignItems: 'center',
+  headerTitle: {},
+  sectionHeader: {
+    ...Typography.label,
+    color: Colors.primary,
+    fontWeight: '700',
+    letterSpacing: 1.2,
   },
   title: {
-    ...Typography.headline,
+    ...Typography.cardTitle,
     color: Colors.text,
-    marginLeft: 8,
-    fontSize: 15,
+    marginTop: 2,
   },
   viewAll: {
     flexDirection: 'row',
     alignItems: 'center',
   },
   viewAllText: {
-    ...Typography.footnoteMedium,
+    ...Typography.captionMedium,
     color: Colors.primary,
     fontWeight: '600',
     marginRight: 4,
@@ -104,12 +106,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingVertical: 10,
     borderBottomWidth: 1,
-    borderBottomColor: Colors.divider,
+    borderBottomColor: Colors.border,
+  },
+  lastItem: {
+    borderBottomWidth: 0,
+    paddingBottom: 0,
   },
   iconCircle: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: 'rgba(0, 91, 172, 0.08)',
     justifyContent: 'center',
     alignItems: 'center',
@@ -124,8 +130,9 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   itemTitle: {
-    ...Typography.subheadMedium,
+    ...Typography.bodyMedium,
     color: Colors.text,
+    fontSize: 14,
     fontWeight: '600',
     flex: 1,
   },
@@ -135,7 +142,7 @@ const styles = StyleSheet.create({
     marginLeft: 8,
   },
   itemDesc: {
-    ...Typography.footnote,
+    ...Typography.caption,
     color: Colors.textSecondary,
     marginTop: 2,
   },

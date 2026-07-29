@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import { ArrowLeft, Clock, Gauge, Droplet, ShieldCheck, MapPin } from 'lucide-react-native';
+import { ArrowLeft, Clock, Gauge, Droplet, ShieldCheck, MapPin, Layers } from 'lucide-react-native';
 import Svg, { Circle } from 'react-native-svg';
-import { Colors, Typography, Spacing } from '../constants/theme';
+import { Colors, Typography, Spacing, BorderRadius } from '../constants/theme';
 import { GlassCard } from '../components/ui/GlassCard';
 import { StatusBadge } from '../components/ui/StatusBadge';
 import { useAuthStore } from '../store/authStore';
@@ -35,8 +35,8 @@ export default function WaterSupplyDetailScreen() {
   const status = schedule?.status || 'AVAILABLE';
 
   // SVG Gauge Math
-  const size = 160;
-  const strokeWidth = 14;
+  const size = 150;
+  const strokeWidth = 12;
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
   const progress = Math.min(pressureBar / 5.0, 1.0);
@@ -46,7 +46,7 @@ export default function WaterSupplyDetailScreen() {
     <View style={[styles.container, { paddingTop: insets.top + 10 }]}>
       <View style={styles.header}>
         <TouchableOpacity onPress={() => router.back()} style={styles.backBtn}>
-          <ArrowLeft size={22} color={Colors.text} />
+          <ArrowLeft size={20} color={Colors.text} />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Water Supply Details</Text>
         <View style={{ width: 40 }} />
@@ -54,7 +54,7 @@ export default function WaterSupplyDetailScreen() {
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={styles.scrollContent}>
         {/* Main Status Hero Card */}
-        <GlassCard style={styles.card} intensity={50} variant="elevated">
+        <GlassCard style={styles.card} intensity={40} variant="elevated">
           <View style={styles.heroHeader}>
             <StatusBadge status={status} />
             <Text style={styles.wardTag}>
@@ -68,7 +68,7 @@ export default function WaterSupplyDetailScreen() {
                 cx={size / 2}
                 cy={size / 2}
                 r={radius}
-                stroke="rgba(0, 91, 172, 0.12)"
+                stroke="#E2E8F0"
                 strokeWidth={strokeWidth}
                 fill="transparent"
               />
@@ -95,7 +95,7 @@ export default function WaterSupplyDetailScreen() {
           </View>
 
           <View style={styles.countdownBox}>
-            <Clock size={20} color={Colors.secondary} />
+            <Clock size={18} color={Colors.secondary} />
             <View style={{ marginLeft: 10 }}>
               <Text style={styles.cdLabel}>Next Scheduled Supply In</Text>
               <Text style={styles.cdTime}>{countdown.formatted}</Text>
@@ -104,12 +104,12 @@ export default function WaterSupplyDetailScreen() {
         </GlassCard>
 
         {/* Today's Supply Schedule Slots */}
-        <GlassCard style={styles.card} intensity={45}>
+        <GlassCard style={styles.card} intensity={40}>
           <Text style={styles.sectionTitle}>TODAY'S SUPPLY SCHEDULE SLOTS</Text>
 
           <View style={styles.slotRow}>
             <View style={styles.slotIconBox}>
-              <Droplet size={20} color={Colors.primary} />
+              <Droplet size={18} color={Colors.primary} />
             </View>
             <View style={{ flex: 1, marginLeft: 12 }}>
               <Text style={styles.slotTitle}>Morning Water Supply</Text>
@@ -124,7 +124,7 @@ export default function WaterSupplyDetailScreen() {
 
           <View style={[styles.slotRow, { marginTop: 12 }]}>
             <View style={styles.slotIconBox}>
-              <Clock size={20} color={Colors.secondary} />
+              <Clock size={18} color={Colors.secondary} />
             </View>
             <View style={{ flex: 1, marginLeft: 12 }}>
               <Text style={styles.slotTitle}>Evening Water Supply</Text>
@@ -139,11 +139,11 @@ export default function WaterSupplyDetailScreen() {
         </GlassCard>
 
         {/* Reservoir Source Info */}
-        <GlassCard style={styles.card} intensity={45}>
+        <GlassCard style={styles.card} intensity={40}>
           <Text style={styles.sectionTitle}>RESERVOIR & DISTRIBUTION SOURCE</Text>
 
           <View style={styles.sourceRow}>
-            <MapPin size={20} color={Colors.primary} />
+            <MapPin size={18} color={Colors.primary} />
             <View style={{ marginLeft: 10, flex: 1 }}>
               <Text style={styles.sourceTitle}>Primary Reservoir Source</Text>
               <Text style={styles.sourceValue}>
@@ -167,18 +167,20 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'space-between',
     paddingHorizontal: Spacing.screen,
-    marginBottom: 8,
+    marginBottom: 12,
   },
   backBtn: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: 'rgba(255, 255, 255, 0.65)',
+    backgroundColor: Colors.surface,
+    borderWidth: 1,
+    borderColor: Colors.border,
     justifyContent: 'center',
     alignItems: 'center',
   },
   headerTitle: {
-    ...Typography.title3,
+    ...Typography.cardTitle,
     color: Colors.text,
   },
   scrollContent: {
@@ -188,15 +190,16 @@ const styles = StyleSheet.create({
   card: {
     padding: 20,
     marginBottom: 16,
+    borderRadius: BorderRadius.card, // 24px
   },
   heroHeader: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    marginBottom: 20,
+    marginBottom: 16,
   },
   wardTag: {
-    ...Typography.footnoteMedium,
+    ...Typography.captionMedium,
     color: Colors.primary,
     fontWeight: '700',
   },
@@ -210,8 +213,8 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   pressureValue: {
-    ...Typography.largeTitle,
-    fontSize: 42,
+    ...Typography.display,
+    fontSize: 38,
     color: Colors.primary,
     fontWeight: '800',
   },
@@ -230,62 +233,66 @@ const styles = StyleSheet.create({
   countdownBox: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 91, 172, 0.08)',
-    padding: 14,
-    borderRadius: 16,
-    marginTop: 20,
+    backgroundColor: 'rgba(0, 91, 172, 0.06)',
+    padding: 12,
+    borderRadius: BorderRadius.md,
+    marginTop: 16,
   },
   cdLabel: {
-    ...Typography.caption1,
+    ...Typography.caption2,
     color: Colors.textSecondary,
   },
   cdTime: {
-    ...Typography.title2,
+    ...Typography.cardTitle,
     color: Colors.text,
     fontWeight: '800',
     fontVariant: ['tabular-nums'],
   },
   sectionTitle: {
-    ...Typography.caption1,
+    ...Typography.label,
     fontWeight: '700',
     color: Colors.primary,
     letterSpacing: 1.2,
-    marginBottom: 16,
+    marginBottom: 14,
   },
   slotRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: 'rgba(255, 255, 255, 0.6)',
+    backgroundColor: 'rgba(245, 247, 250, 0.8)',
     padding: 12,
-    borderRadius: 14,
+    borderRadius: BorderRadius.md,
+    borderWidth: 1,
+    borderColor: Colors.border,
   },
   slotIconBox: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: 'rgba(0, 91, 172, 0.1)',
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: 'rgba(0, 91, 172, 0.08)',
     justifyContent: 'center',
     alignItems: 'center',
   },
   slotTitle: {
-    ...Typography.subheadMedium,
+    ...Typography.bodyMedium,
     color: Colors.text,
     fontWeight: '700',
+    fontSize: 14,
   },
   slotTime: {
-    ...Typography.footnote,
+    ...Typography.caption2,
     color: Colors.textSecondary,
     marginTop: 2,
   },
   activeTag: {
     backgroundColor: Colors.successLight,
     paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 8,
+    paddingVertical: 3,
+    borderRadius: BorderRadius.pill,
   },
   activeTagText: {
-    ...Typography.caption2,
+    ...Typography.label,
     color: Colors.success,
+    fontSize: 10,
     fontWeight: '700',
   },
   sourceRow: {
@@ -293,13 +300,14 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   sourceTitle: {
-    ...Typography.caption1,
+    ...Typography.caption2,
     color: Colors.textSecondary,
   },
   sourceValue: {
-    ...Typography.subheadMedium,
+    ...Typography.bodyMedium,
     color: Colors.text,
     fontWeight: '700',
+    fontSize: 13,
     marginTop: 2,
   },
 });

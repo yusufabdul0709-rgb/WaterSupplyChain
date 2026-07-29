@@ -3,7 +3,19 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Colors, Typography, BorderRadius } from '../../constants/theme';
 
 interface StatusBadgeProps {
-  status: 'AVAILABLE' | 'UNAVAILABLE' | 'MAINTENANCE' | 'SCHEDULED' | 'PENDING' | 'ASSIGNED' | 'IN_PROGRESS' | 'RESOLVED' | 'CRITICAL' | 'HIGH' | 'MEDIUM' | 'LOW';
+  status:
+    | 'AVAILABLE'
+    | 'UNAVAILABLE'
+    | 'MAINTENANCE'
+    | 'SCHEDULED'
+    | 'PENDING'
+    | 'ASSIGNED'
+    | 'IN_PROGRESS'
+    | 'RESOLVED'
+    | 'CRITICAL'
+    | 'HIGH'
+    | 'MEDIUM'
+    | 'LOW';
   size?: 'sm' | 'md';
 }
 
@@ -15,27 +27,27 @@ export function StatusBadge({ status, size = 'md' }: StatusBadgeProps) {
       case 'LOW':
         return {
           bg: Colors.successLight,
-          border: 'rgba(0, 200, 83, 0.3)',
+          border: 'rgba(34, 197, 94, 0.25)',
           text: Colors.success,
           dot: Colors.success,
-          label: status === 'AVAILABLE' ? 'Water Supply Live' : status === 'RESOLVED' ? 'Resolved' : 'Low Priority',
+          label: status === 'AVAILABLE' ? 'Supply Live' : status === 'RESOLVED' ? 'Resolved' : 'Low Priority',
         };
       case 'UNAVAILABLE':
       case 'CRITICAL':
         return {
           bg: Colors.dangerLight,
-          border: 'rgba(229, 57, 53, 0.3)',
-          text: Colors.danger,
-          dot: Colors.danger,
-          label: status === 'UNAVAILABLE' ? 'Supply Paused' : 'Critical',
+          border: 'rgba(239, 68, 68, 0.25)',
+          text: Colors.error,
+          dot: Colors.error,
+          label: status === 'UNAVAILABLE' ? 'Supply Offline' : 'Critical',
         };
       case 'MAINTENANCE':
       case 'HIGH':
         return {
           bg: Colors.warningLight,
-          border: 'rgba(255, 193, 7, 0.3)',
+          border: 'rgba(245, 158, 11, 0.25)',
           text: '#D97706',
-          dot: '#D97706',
+          dot: Colors.warning,
           label: status === 'MAINTENANCE' ? 'Maintenance' : 'High Priority',
         };
       case 'SCHEDULED':
@@ -45,10 +57,17 @@ export function StatusBadge({ status, size = 'md' }: StatusBadgeProps) {
       default:
         return {
           bg: Colors.infoLight,
-          border: 'rgba(0, 166, 214, 0.3)',
-          text: Colors.secondary,
-          dot: Colors.secondary,
-          label: status === 'SCHEDULED' ? 'Next Supply Scheduled' : status === 'IN_PROGRESS' ? 'Work In Progress' : status === 'ASSIGNED' ? 'Engineer Assigned' : status,
+          border: 'rgba(59, 130, 246, 0.25)',
+          text: Colors.info,
+          dot: Colors.info,
+          label:
+            status === 'SCHEDULED'
+              ? 'Scheduled'
+              : status === 'IN_PROGRESS'
+              ? 'In Progress'
+              : status === 'ASSIGNED'
+              ? 'Assigned'
+              : status,
         };
     }
   };
@@ -89,11 +108,11 @@ const styles = StyleSheet.create({
     marginRight: 4,
   },
   label: {
-    ...Typography.footnoteMedium,
-    fontWeight: '600',
+    ...Typography.label,
+    fontWeight: '700',
   },
   labelSm: {
-    ...Typography.caption1,
-    fontWeight: '600',
+    ...Typography.caption2,
+    fontWeight: '700',
   },
 });
